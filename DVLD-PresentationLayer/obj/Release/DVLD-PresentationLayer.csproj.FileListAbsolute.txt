@@ -1,0 +1,10 @@
+C:\Users\artis\source\repos\DVLD Project\DVLD-PresentationLayer\bin\Release\DVLD-PresentationLayer.exe.config
+C:\Users\artis\source\repos\DVLD Project\DVLD-PresentationLayer\bin\Release\DVLD-PresentationLayer.exe
+C:\Users\artis\source\repos\DVLD Project\DVLD-PresentationLayer\bin\Release\DVLD-PresentationLayer.pdb
+C:\Users\artis\source\repos\DVLD Project\DVLD-PresentationLayer\obj\Release\DVLD-PresentationLayer.csproj.AssemblyReference.cache
+C:\Users\artis\source\repos\DVLD Project\DVLD-PresentationLayer\obj\Release\DVLD_PresentationLayer.Form1.resources
+C:\Users\artis\source\repos\DVLD Project\DVLD-PresentationLayer\obj\Release\DVLD_PresentationLayer.Properties.Resources.resources
+C:\Users\artis\source\repos\DVLD Project\DVLD-PresentationLayer\obj\Release\DVLD-PresentationLayer.csproj.GenerateResource.cache
+C:\Users\artis\source\repos\DVLD Project\DVLD-PresentationLayer\obj\Release\DVLD-PresentationLayer.csproj.CoreCompileInputs.cache
+C:\Users\artis\source\repos\DVLD Project\DVLD-PresentationLayer\obj\Release\DVLD-PresentationLayer.exe
+C:\Users\artis\source\repos\DVLD Project\DVLD-PresentationLayer\obj\Release\DVLD-PresentationLayer.pdb
