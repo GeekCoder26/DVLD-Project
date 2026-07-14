@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\artis\\source\\repos\\DVLD Project\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{3F062922-549B-4550-AF68-E5542FC25458}|DVLD-PresentationLayer\\DVLD.csproj|c:\\users\\artis\\source\\repos\\dvld project\\dvld-presentationlayer\\people\\frmlistpeople.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{3F062922-549B-4550-AF68-E5542FC25458}|DVLD-PresentationLayer\\DVLD.csproj|solutionrelative:dvld-presentationlayer\\people\\frmlistpeople.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{3F062922-549B-4550-AF68-E5542FC25458}|DVLD-PresentationLayer\\DVLD.csproj|c:\\users\\artis\\source\\repos\\dvld project\\dvld-presentationlayer\\users\\frmmanageusers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{3F062922-549B-4550-AF68-E5542FC25458}|DVLD-PresentationLayer\\DVLD.csproj|solutionrelative:dvld-presentationlayer\\users\\frmmanageusers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
@@ -31,6 +35,18 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "frmListPeople.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\artis\\source\\repos\\DVLD Project\\DVLD-PresentationLayer\\People\\frmListPeople.cs",
+              "RelativeDocumentMoniker": "DVLD-PresentationLayer\\People\\frmListPeople.cs",
+              "ToolTip": "C:\\Users\\artis\\source\\repos\\DVLD Project\\DVLD-PresentationLayer\\People\\frmListPeople.cs [Design]",
+              "RelativeToolTip": "DVLD-PresentationLayer\\People\\frmListPeople.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-14T20:25:57.396Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "frmManageUsers.cs [Design]",
               "DocumentMoniker": "C:\\Users\\artis\\source\\repos\\DVLD Project\\DVLD-PresentationLayer\\Users\\frmManageUsers.cs",
               "RelativeDocumentMoniker": "DVLD-PresentationLayer\\Users\\frmManageUsers.cs",
