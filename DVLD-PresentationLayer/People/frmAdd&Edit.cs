@@ -262,13 +262,14 @@ namespace DVLD_PresentationLayer.People
         }
         public void UpdatePerson()
         {
-            frmListPeople frm = new frmListPeople();
+            //frmListPeople frm = new frmListPeople();
             
 
             NewPerson = clsPerson.FindPerson(_PersonID);
 
             if (NewPerson == null)
             {
+                MessageBox.Show("Empty Object, Please try again", "Empty Object", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.Close();
                 return;
             }

@@ -20,7 +20,7 @@ namespace DVLD_PresentationLayer
 
         private DataTable _dtPeople = _dtAllPeople.DefaultView.ToTable(false, "PersonID", "NationalNo",
                                                        "FirstName", "SecondName", "ThirdName", "LastName",
-                                                       "Gendor", "DateOfBirth", "Nationality",
+                                                       "Gender", "DateOfBirth", "Nationality",
                                                        "Phone", "Email");
 
         public frmListPeople()
@@ -45,7 +45,7 @@ namespace DVLD_PresentationLayer
 
             _dtPeople = _dtAllPeople.DefaultView.ToTable(false, "PersonID", "NationalNo",
                                                        "FirstName", "SecondName", "ThirdName", "LastName",
-                                                       "Gendor", "DateOfBirth", "Nationality",
+                                                       "Gender", "DateOfBirth", "Nationality",
                                                        "Phone", "Email");
     
             dgvShowPeople.DataSource = _dtPeople;
@@ -175,43 +175,93 @@ namespace DVLD_PresentationLayer
             DeletePersonFromSystem();
             RefreshList();
         }
-        public void FilterByContent(string ColumnName, string Content)
-        {
-            RefreshList();
-
-            if (dgvShowPeople.Columns.Contains(ColumnName))
-            {
-                DataTable dt = clsPerson.FindPeson(ColumnName, Content);
-                dgvShowPeople.DataSource = dt;
-                toolStripStatusLabel1.Text = "# Records: " + dgvShowPeople.Rows.Count.ToString();
-            }
-            
-
-        }
+        
         private void tbFilterBy_TextChanged(object sender, EventArgs e)
         {
-            if(string.IsNullOrEmpty(tbFilterBy.Text))
+            string FilterColumn = cmbFilterPeople.SelectedItem.ToString();
+
+            switch (cmbFilterPeople.Text)
             {
-                RefreshList();
+
+                case "PersonID":
+                    FilterColumn = "PersonID";
+                    break;
+
+                case "NationalNo":
+                    FilterColumn = "NationalNo";
+                    break;
+
+                case "Firstname":
+                    FilterColumn = "Firstname";
+                    break;
+
+                case "Secondname":
+                    FilterColumn = "Secondname";
+                    break;
+
+                case "Thirdname":
+                    FilterColumn = "Thirdname";
+                    break;
+
+                case "Lastname":
+                    FilterColumn = "Lastname";
+                    break;
+
+                case "gender":
+                    FilterColumn = "gender";
+                    break;
+
+                case "DateOfBirth":
+                    FilterColumn = "DateOfBirth";
+                    break;
+
+                case "Address":
+                    FilterColumn = "Address";
+                    break;
+
+                case "Phone":
+                    FilterColumn = "Phone";
+                    break;
+
+                case "Email":
+                    FilterColumn = "Email";
+                    break;
+
+                default:
+                    FilterColumn = "None";
+                    break;
+
+
+            }
+
+            if (tbFilterBy.Text.Trim() == "" || FilterColumn == "None")
+            {
+                _dtPeople.DefaultView.RowFilter = string.Empty;
+                statusStrip1.Text = $"# Records: {dgvShowPeople.Rows.Count}";
                 return;
             }
 
-            FilterByContent(cmbFilterPeople.Text,tbFilterBy.Text );
-            
+            if(FilterColumn == "PersonID")
+            {
+                _dtPeople.DefaultView.RowFilter = string.Format("[{0}] = {1}", FilterColumn, tbFilterBy.Text.Trim());
+            }
+            else
+            {
+                _dtPeople.DefaultView.RowFilter = string.Format("[{0}] Like '{1}%'", FilterColumn, tbFilterBy.Text.Trim());
+            }
+            statusStrip1.Text = $"# Records: {dgvShowPeople.Rows.Count}";
 
 
         }
 
         private void cmbFilterPeople_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(cmbFilterPeople.Text != "None")
+            tbFilterBy.Visible = (cmbFilterPeople.Text != "None");
+
+            if(tbFilterBy.Visible)
             {
-                tbFilterBy.Visible = true;
-                
-            }
-            else
-            {
-                tbFilterBy.Visible = false;
+                tbFilterBy.Text = "";
+                tbFilterBy.Focus();
             }
             
         }

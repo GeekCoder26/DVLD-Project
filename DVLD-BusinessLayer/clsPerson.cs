@@ -127,10 +127,10 @@ namespace DVLD_BusinessLayer
                                                                      this._Address, this._NationalityCountryID,  this.ImagePath);
         }
 
-        public static DataTable FindPeson(string ColumnName, string Content)
-        {
-            return clsPersonData.FindPerson(ColumnName, Content);
-        }
+        //public static DataTable FindPeson(string ColumnName, string Content)
+        //{
+        //    return clsPersonData.FindPerson(ColumnName, Content);
+        //}
 
         public int GetPersonID()
         {
