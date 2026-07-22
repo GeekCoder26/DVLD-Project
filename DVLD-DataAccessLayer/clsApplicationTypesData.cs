@@ -17,73 +17,75 @@ namespace DVLD_DataAccessLayer
         {
             DataTable dt = new DataTable();
 
-            SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString);
-
-            string Query = "select * from ApplicationTypes;";
-
-            SqlCommand command = new SqlCommand(Query, connection);
-
-            try
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
             {
-                connection.Open();
 
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.HasRows)
+                using (SqlCommand command = new SqlCommand("SP_GetAllApplicationTypes", connection))
                 {
-                    dt.Load(reader);
+
+                    try
+                    {
+                        connection.Open();
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+
+                            if (reader.HasRows)
+                            {
+                                dt.Load(reader);
+                            }
+                        }
+
+                  
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        ExceptionEventLog.RegiterErrorToLogRegitry(ex);
+                    }
                 }
-                reader.Close();
-
 
             }
-            catch (Exception ex)
-            {
 
-            }
-            finally
-            {
-                connection.Close();
-            }
 
-            return dt;
+                return dt;
 
         }
         public static bool UpdateAplicationTypes(int ApplicationID, string ApplicationTitle, double ApplicationFees)
         {
 
-            SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString);
-
-            string Query = @"Update ApplicationTypes
-                              Set ApplicationTypeTitle = @ApplicationTitle,
-                                  ApplicationFees = @ApplicationFees
-                              Where ApplicationTypeID = @ApplicationID ;";
-
-            SqlCommand cmd = new SqlCommand(Query, connection);
-
-            cmd.Parameters.AddWithValue("@ApplicationTitle", ApplicationTitle);
-            cmd.Parameters.AddWithValue("@ApplicationFees", ApplicationFees);
-            cmd.Parameters.AddWithValue("@ApplicationID", ApplicationID);
-
             int RowsAffected = 0;
-
-            try
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
             {
 
-                connection.Open();
+                using (SqlCommand cmd = new SqlCommand("SP_UpdateApplicationTypes", connection))
+                {
+                    cmd.Parameters.AddWithValue("@ApplicationTitle", ApplicationTitle);
+                    cmd.Parameters.AddWithValue("@ApplicationFees", ApplicationFees);
+                    cmd.Parameters.AddWithValue("@ApplicationID", ApplicationID);
 
-                RowsAffected = cmd.ExecuteNonQuery();
+                    cmd.CommandType = CommandType.StoredProcedure;
 
-            }
-            catch (Exception ex)
-            {
+                    try
+                    {
 
+                        connection.Open();
+
+                        RowsAffected = cmd.ExecuteNonQuery();
+
+                    }
+                    catch (Exception ex)
+                    {
+                        ExceptionEventLog.RegiterErrorToLogRegitry(ex);
+                    }
+                }
+
+                
             }
-            finally
-            {
-                connection.Close();
-            }
-            return (RowsAffected > 0);
+
+
+                return (RowsAffected > 0);
 
 
 
@@ -91,38 +93,44 @@ namespace DVLD_DataAccessLayer
 
         public static bool FindApplicationType(int ApplicationTypeID, ref string ApplicationTitle, ref float ApplicationFees)
         {
-            SqlConnection connection = new SqlConnection( DataAccessSettings.connectionString);
-
-            string Query = "select * from ApplicationTypes Where ApplicationTypeID = @ApplicationTypeID;";
-
-            SqlCommand command = new SqlCommand(Query, connection);
-
-            command.Parameters.AddWithValue("@ApplicationID", ApplicationTypeID);
-
-            bool isfound = true ;
-            try
+            bool isfound = true;
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
             {
-                connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
 
-                if (reader.Read())
+                using (SqlCommand command = new SqlCommand("SP_FindApplicationType", connection))
                 {
-                    ApplicationTitle = (string)reader["ApplicationTypeTitle"];
-                    ApplicationFees = Convert.ToSingle(reader["ApplicationFees"]);
 
+                    command.Parameters.AddWithValue("@ApplicationID", ApplicationTypeID);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+
+                            if (reader.Read())
+                            {
+                                ApplicationTitle = (string)reader["ApplicationTypeTitle"];
+                                ApplicationFees = Convert.ToSingle(reader["ApplicationFees"]);
+
+                            }
+
+                        }
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        ExceptionEventLog.RegiterErrorToLogRegitry(ex);
+                        return false;
+                    }
                 }
-                reader.Close();
 
             }
-            catch (Exception ex)
-            {
-                return false;
-            }
-            finally
-            {
-                connection.Close();
-            }
-            return isfound;
+
+
+                return isfound;
         }
 
 

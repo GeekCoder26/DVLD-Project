@@ -15,75 +15,85 @@ namespace DVLD_DataAccessLayer
         {
 
             DataTable CountriesDataTable = new DataTable();
-            SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString);
 
-            string Query = @"select * from Countries order by Countries.CountryName";
-
-            SqlCommand command = new SqlCommand(Query, connection);
-
-            try
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
             {
-                SqlDataReader reader = command.ExecuteReader();
 
-                if (reader.HasRows)
+                using (SqlCommand command = new SqlCommand("SP_getallcountries", connection))
                 {
-                    CountriesDataTable.Load(reader);
 
+                    try
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                CountriesDataTable.Load(reader);
+
+                            }
+                        }
+
+                       
+                       
+                    }
+                    catch (Exception ex)
+                    {
+                        ExceptionEventLog.RegiterErrorToLogRegitry(ex);
+                    }
                 }
-                reader.Close();
-            }
-            catch (Exception ex)
-            {
 
             }
-            finally
-            {
-                connection.Close();
-            }
 
-            return CountriesDataTable;
+
+
+                return CountriesDataTable;
 
 
         }
 
         public static bool GetCountryByName(string CountryName, ref int ID)
         {
-            SqlConnection connection = new SqlConnection( DataAccessSettings.connectionString);
-
-            string Query = @"Select * from Countries 
-                                Where CountryName = @CountryName";
-
-            SqlCommand command = new SqlCommand(Query, connection);
-
-            command.Parameters.AddWithValue("@CountryName", CountryName);
-
             bool isfound = false;
-
-            try
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
             {
-                connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.Read())
+                using (SqlCommand command = new SqlCommand("SP_GetCountryByName", connection))
                 {
-                    ID = (int)reader["CountryID"];
-                    isfound = true;
+
+                    command.Parameters.AddWithValue("@CountryName", CountryName);
+                    command.CommandType = CommandType.StoredProcedure;
+
+
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                ID = (int)reader["CountryID"];
+                                isfound = true;
+                            }
+                            else
+                            {
+                                isfound = false;
+                            }
+                        }
+
+                       
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        ExceptionEventLog.RegiterErrorToLogRegitry(ex);
+                        isfound = false;
+                    }
                 }
-                else
-                {
-                    isfound = false;
-                }
-                reader.Close();
+
 
             }
-            catch (Exception ex)
-            {
-                isfound = false;
-            }
-            finally
-            {
-                connection.Close();
-            }
+
+
 
 
             return isfound;
@@ -93,44 +103,45 @@ namespace DVLD_DataAccessLayer
         public static bool GetCountryByID(ref string CountryName, int ID)
         {
 
-            SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString);
-
-            string Query = @"Select * from Countries 
-                                Where CountryID = @CountryID";
-
-            SqlCommand command = new SqlCommand(Query, connection);
-
-            command.Parameters.AddWithValue("@CountryID", ID);
-
             bool isfound = false;
-
-            try
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
             {
-                connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.Read())
+                using (SqlCommand command = new SqlCommand("SP_GetCountryByID", connection))
                 {
-                    CountryName = (string)reader["CountryName"];
-                    isfound = true;
+
+                    command.Parameters.AddWithValue("@CountryID", ID);
+                    command.CommandType = CommandType.StoredProcedure;
+
+
+
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+
+                            if (reader.Read())
+                            {
+                                CountryName = (string)reader["CountryName"];
+                                isfound = true;
+                            }
+                            else
+                            {
+                                isfound = false;
+                            }
+                        }
+
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        ExceptionEventLog.RegiterErrorToLogRegitry(ex);
+                        isfound = false;
+                    }
                 }
-                else
-                {
-                    isfound = false;
-                }
-                reader.Close();
 
             }
-            catch (Exception ex)
-            {
-                isfound = false;
-            }
-            finally
-            {
-                connection.Close();
-            }
-
-
             return isfound;
 
 

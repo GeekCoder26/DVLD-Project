@@ -17,85 +17,90 @@ namespace DVLD_DataAccessLayer
         {
             DataTable dt = new DataTable();
 
-            SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString);
-
-            string Query = "select * from Applications;";
-
-            SqlCommand command = new SqlCommand(Query, connection);
-
-
-            try
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
             {
 
-                connection.Open();
-
-                SqlDataReader reader = command.ExecuteReader();
-
-                if(reader.HasRows)
+                using (SqlCommand command = new SqlCommand("SP_GetAllApplications", connection))
                 {
-                    dt.Load(reader);
+
+
+                    try
+                    {
+
+                        connection.Open();
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                dt.Load(reader);
+                            }
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        ExceptionEventLog.RegiterErrorToLogRegitry(ex);
+                    }
                 }
-                reader.Close();
-
-
 
             }
-            catch (Exception ex)
-            {
-                
-            }
-            finally
-            {
-                connection.Close();
-            }
-            return dt;
+
+
+                return dt;
         }
 
         public static int AddNewApplication(int PersonID, DateTime ApplicationDate, int ApplicationTypeID,
                                             byte ApplicationStatus, DateTime LastStatusDate, float PaidFees,
                                             int UserID)
         {
-            SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString);
-
-            string Query = @"insert into Applications (ApplicantPersonID, ApplicationDate, ApplicationTypeID, ApplicationStatus, LastStatusDate, PaidFees, CreatedByUserID)
-                             Values (@ApplicantPersonID, @ApplicationDate, @ApplicationTypeID, @ApplicationStatus, @LastStatusDate, @PaidFees, @CreatedByUserID)
-                             Select Scope_Identity();";
-
-            SqlCommand command = new SqlCommand(Query, connection);
-
-            command.Parameters.AddWithValue("@ApplicantPersonID", PersonID);
-            command.Parameters.AddWithValue("@ApplicationDate", ApplicationDate);
-            command.Parameters.AddWithValue("@ApplicationTypeID", ApplicationTypeID);
-            command.Parameters.AddWithValue("@ApplicationStatus", ApplicationStatus);
-            command.Parameters.AddWithValue("@LastStatusDate", LastStatusDate);
-            command.Parameters.AddWithValue("@PaidFees", PaidFees);
-            command.Parameters.AddWithValue("@CreatedByUserID", UserID);
-
             int ApplicationID = -1;
-
-            try
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
             {
-                connection.Open();
 
-                object result = command.ExecuteScalar();
-
-                if(result != null && int.TryParse(result.ToString(), out int ReturnedID))
+                using (SqlCommand command = new SqlCommand("SP_AddNewApplication", connection))
                 {
-                    ApplicationID = ReturnedID;
+
+                    command.Parameters.AddWithValue("@ApplicantPersonID", PersonID);
+                    command.Parameters.AddWithValue("@ApplicationDate", ApplicationDate);
+                    command.Parameters.AddWithValue("@ApplicationTypeID", ApplicationTypeID);
+                    command.Parameters.AddWithValue("@ApplicationStatus", ApplicationStatus);
+                    command.Parameters.AddWithValue("@LastStatusDate", LastStatusDate);
+                    command.Parameters.AddWithValue("@PaidFees", PaidFees);
+                    command.Parameters.AddWithValue("@CreatedByUserID", UserID);
+
+                    var outParam = new SqlParameter("@ApplicationID", SqlDbType.Int)
+                    {
+                        Direction = ParameterDirection.Output
+                    };
+                    command.Parameters.Add(outParam);
+
+
+
+                    try
+                    {
+                        connection.Open();
+
+                        object result = command.ExecuteScalar();
+
+                        if (result != null && int.TryParse(result.ToString(), out int ReturnedID))
+                        {
+                            ApplicationID = ReturnedID;
+                        }
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        ExceptionEventLog.RegiterErrorToLogRegitry(ex);
+                    }
                 }
 
-
-            }
-            catch (Exception ex)
-            {
-
-            }
-            finally
-            {
-                connection.Close();
             }
 
-            return ApplicationID;
+
+
+                return ApplicationID;
 
         }
 
@@ -104,44 +109,37 @@ namespace DVLD_DataAccessLayer
                                              DateTime LastStatusDate, float PaidFees, int UserID)
         {
 
-            SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString);
-
-            string Query = @"Update Applications
-                             Set ApplicantPersonID = @ApplicantPersonID,
-                                 ApplicationDate = @ApplicationDate, 
-                                 ApplicationTypeID = @ApplicationTypeID,
-                                 ApplicationStatus = @ApplicationStatus, 
-                                 LastStatusDate = @LastStatusDate, 
-                                 PaidFees = @PaidFees, 
-                                 CreatedByUserID = @CreatedByUserID
-                                 Where ApplicationID = @ApplicationID;";
-
-            SqlCommand command = new SqlCommand(Query, connection);
-
-            command.Parameters.AddWithValue("@ApplicantPersonID", PersonID);
-            command.Parameters.AddWithValue("@ApplicationDate", ApplicationDate);
-            command.Parameters.AddWithValue("@ApplicationTypeID", ApplicationTypeID);
-            command.Parameters.AddWithValue("@ApplicationStatus", ApplicationStatus);
-            command.Parameters.AddWithValue("@LastStatusDate", LastStatusDate);
-            command.Parameters.AddWithValue("@PaidFees", PaidFees);
-            command.Parameters.AddWithValue("@CreatedByUserID", UserID);
-            command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
-
             int RowsAffected = 0;
-            try
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
             {
-                connection.Open();
+                using (SqlCommand command = new SqlCommand("SP_UpdateApplication", connection))
+                {
 
-                RowsAffected = command.ExecuteNonQuery();
+                    command.Parameters.AddWithValue("@ApplicantPersonID", PersonID);
+                    command.Parameters.AddWithValue("@ApplicationDate", ApplicationDate);
+                    command.Parameters.AddWithValue("@ApplicationTypeID", ApplicationTypeID);
+                    command.Parameters.AddWithValue("@ApplicationStatus", ApplicationStatus);
+                    command.Parameters.AddWithValue("@LastStatusDate", LastStatusDate);
+                    command.Parameters.AddWithValue("@PaidFees", PaidFees);
+                    command.Parameters.AddWithValue("@CreatedByUserID", UserID);
+                    command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
 
-            }
-            catch (Exception ex)
-            {
+                    command.CommandType = CommandType.StoredProcedure;
 
-            }
-            finally
-            {
-                connection.Close();
+
+                    try
+                    {
+                        connection.Open();
+
+                        RowsAffected = command.ExecuteNonQuery();
+
+                    }
+                    catch (Exception ex)
+                    {
+                        ExceptionEventLog.RegiterErrorToLogRegitry(ex);
+                    }
+                }
+
             }
 
             return (RowsAffected > 0);
@@ -149,31 +147,33 @@ namespace DVLD_DataAccessLayer
         }
         public static bool DeleteApplication(int ApplicationID)
         {
-            SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString);
-
-            string Query = @"Delete Applications Where ApplicationID = @ApplicationID;";
-
-            SqlCommand command = new SqlCommand(Query, connection);
-
-            command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
-
             int RowsAffected = 0;
-            try
-            {
-                connection.Open();
-
-                RowsAffected = command.ExecuteNonQuery();
-
-            }
-            catch (Exception ex)
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
             {
 
+                using (SqlCommand command = new SqlCommand("SP_DeleteApplication", connection))
+                {
+
+                    command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
+                    command.CommandType = CommandType.StoredProcedure;
+
+
+                    try
+                    {
+                        connection.Open();
+
+                        RowsAffected = command.ExecuteNonQuery();
+
+                    }
+                    catch (Exception ex)
+                    {
+                        ExceptionEventLog.RegiterErrorToLogRegitry(ex);
+                    }
+                }
+
             }
-            finally
-            {
-                connection.Close();
-            }
-            return (RowsAffected > 0);
+
+                return (RowsAffected > 0);
 
 
 
@@ -183,38 +183,44 @@ namespace DVLD_DataAccessLayer
                                            ref int ApplicationTypeID, ref byte ApplicationStatus,ref DateTime LastStatusDate,
                                            ref float PaidFees, ref int UserID)
         {
-            SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString);
-
-            string Query = @"Select * from Applications Where ApplicationID = @ApplicationID;";
-
-            SqlCommand command = new SqlCommand(Query, connection);
-
-            command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
-
             bool IsFound = true;
-            try
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
             {
+                using (SqlCommand command = new SqlCommand("SP_FindApplicationByID", connection))
+                {
 
-                connection.Open();
+                    command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
+                    command.CommandType = CommandType.StoredProcedure;
 
-                SqlDataReader reader = command.ExecuteReader();
+                    try
+                    {
 
-                PersonID = (int)reader["ApplicantPersonID"];
-                ApplicationDate = (DateTime)reader["ApplicationDate"];
-                ApplicationTypeID = (int)reader["ApplicationTypeID"];
-                ApplicationStatus = (byte)reader["ApplicationStatus"];
-                LastStatusDate = (DateTime)reader["LastStatusDate"];
-                PaidFees = (float)reader["PaidFees"];
-                UserID = (int)reader["CreatedByUserID"];
+                        connection.Open();
 
-            }
-            catch(Exception ex)
-            {
-                IsFound = false;
-            }
-            finally
-            {
-                connection.Close();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                PersonID = (int)reader["ApplicantPersonID"];
+                                ApplicationDate = (DateTime)reader["ApplicationDate"];
+                                ApplicationTypeID = (int)reader["ApplicationTypeID"];
+                                ApplicationStatus = (byte)reader["ApplicationStatus"];
+                                LastStatusDate = (DateTime)reader["LastStatusDate"];
+                                PaidFees = (float)reader["PaidFees"];
+                                UserID = (int)reader["CreatedByUserID"];
+                            }
+                        }
+
+                        
+
+                    }
+                    catch (Exception ex)
+                    {
+                        ExceptionEventLog.RegiterErrorToLogRegitry(ex);
+                        IsFound = false;
+                    }
+                }
+
             }
             return IsFound;
         }
@@ -230,39 +236,41 @@ namespace DVLD_DataAccessLayer
         {
             int ActiveApplicationID = -1;
 
-            SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString);
-
-            string Query = @"select ActiveApplicationID= ApplicationID from Applications 
-                             where ApplicantPersonID =@ApplicantPersonID and ApplicationTypeID = @ApplicationTypeID 
-                             and ApplicationStatus = 1";
-
-            SqlCommand command = new SqlCommand(Query, connection);
-
-            command.Parameters.AddWithValue("@ApplicantPersonID", PersonID);
-            command.Parameters.AddWithValue("@ApplicationTypeID", ApplicationTypeID);
             bool isfound = false;
-            try
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
             {
 
-                connection.Open();
-
-                object Result = command.ExecuteScalar();
-
-                if (Result != null && int.TryParse(Result.ToString(), out int AppID))
+                using (SqlCommand command = new SqlCommand("SP_GetActiveApplication", connection))
                 {
-                    ActiveApplicationID = AppID;
+
+                    command.Parameters.AddWithValue("@ApplicantPersonID", PersonID);
+                    command.Parameters.AddWithValue("@ApplicationTypeID", ApplicationTypeID);
+
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    try
+                    {
+
+                        connection.Open();
+
+                        object Result = command.ExecuteScalar();
+
+                        if (Result != null && int.TryParse(Result.ToString(), out int AppID))
+                        {
+                            ActiveApplicationID = AppID;
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        ExceptionEventLog.RegiterErrorToLogRegitry(ex);
+                    }
                 }
 
             }
-            catch (Exception ex)
-            {
 
-            }
-            finally
-            {
-                connection.Close();
-            }
-            return ActiveApplicationID;
+
+                return ActiveApplicationID;
 
         }
 
@@ -270,45 +278,44 @@ namespace DVLD_DataAccessLayer
         {
             int ActiveAppApplicationID = -1;
 
-            SqlConnection connection = new SqlConnection (DataAccessSettings.connectionString);
-
-            string Query = @"@""SELECT ActiveApplicationID=Applications.ApplicationID  
-                            From
-                            Applications INNER JOIN
-                            LocalDrivingLicenseApplications ON Applications.ApplicationID = LocalDrivingLicenseApplications.ApplicationID
-                            WHERE ApplicantPersonID = @ApplicantPersonID 
-                            and ApplicationTypeID=@ApplicationTypeID 
-							and LocalDrivingLicenseApplications.LicenseClassID = @LicenseClassID
-                            and ApplicationStatus=1";
-
-            SqlCommand command = new SqlCommand (Query, connection);
-
-            command.Parameters.AddWithValue("@ApplicantPersonID", PersonID);
-            command.Parameters.AddWithValue("@ApplicationTypeID", ApplicationTypeID);
-            command.Parameters.AddWithValue("@LicenseClassID", LicenseClassID);
-
-            try
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
             {
 
-                connection.Open();
 
-                object Result = command.ExecuteScalar();
 
-                if(Result != null && int.TryParse(Result.ToString(), out int AppID))
+                using (SqlCommand command = new SqlCommand("SP_GetActiveApplicationIDForLicenseClass", connection))
                 {
-                    ActiveAppApplicationID = AppID;
+
+                    command.Parameters.AddWithValue("@ApplicantPersonID", PersonID);
+                    command.Parameters.AddWithValue("@ApplicationTypeID", ApplicationTypeID);
+                    command.Parameters.AddWithValue("@LicenseClassID", LicenseClassID);
+
+                    command.CommandType = CommandType.StoredProcedure;
+
+
+                    try
+                    {
+
+                        connection.Open();
+
+                        object Result = command.ExecuteScalar();
+
+                        if (Result != null && int.TryParse(Result.ToString(), out int AppID))
+                        {
+                            ActiveAppApplicationID = AppID;
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        ExceptionEventLog.RegiterErrorToLogRegitry(ex);
+                    }
                 }
 
             }
-            catch(Exception ex)
-            {
 
-            }
-            finally
-            {
-                connection.Close();
-            }
-            return ActiveAppApplicationID;
+
+                return ActiveAppApplicationID;
 
 
         }
@@ -317,37 +324,34 @@ namespace DVLD_DataAccessLayer
         {
             int RowsAffected = 0;
 
-            SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString);
-
-            string Query = @"update Applications
-                             set
-                             ApplicationStatus = @ApplicationStatus,
-                             LastStatusDate = @LastStatusDate,
-                             where ApplicationID = @ApplicationID";
-
-            SqlCommand command = new SqlCommand(Query, connection);
-
-            command.Parameters.AddWithValue("@ApplicationStatus", Status);
-            command.Parameters.AddWithValue("@LastStatusDate", DateTime.Now);
-            command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
-
-            try
-            {
-                connection.Open();
-
-                RowsAffected = command.ExecuteNonQuery();
-
-
-            }
-            catch (Exception ex)
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
             {
 
-            }
-            finally
-            {
-                connection.Close();
-            }
+                using (SqlCommand command = new SqlCommand("SP_UpdateStatus", connection))
+                {
 
+                    command.Parameters.AddWithValue("@ApplicationStatus", Status);
+                    command.Parameters.AddWithValue("@LastStatusDate", DateTime.Now);
+                    command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
+
+                    command.CommandType = CommandType.StoredProcedure;
+
+
+                    try
+                    {
+                        connection.Open();
+
+                        RowsAffected = command.ExecuteNonQuery();
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        ExceptionEventLog.RegiterErrorToLogRegitry(ex);
+                    }
+                }
+
+            }
             return RowsAffected > 0;
 
         }

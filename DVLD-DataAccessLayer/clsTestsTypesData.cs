@@ -15,76 +15,71 @@ namespace DVLD_DataAccessLayer
         {
             DataTable dt = new DataTable();
 
-            SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString);
-
-            string Query = "select * from TestTypes;";
-
-            SqlCommand command = new SqlCommand(Query, connection);
-
-            try
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
             {
-                connection.Open();
 
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.HasRows)
+                using (SqlCommand command = new SqlCommand("SP_GetallTestypes", connection))
                 {
-                    dt.Load(reader);
+
+                    try
+                    {
+                        connection.Open();
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                dt.Load(reader);
+                            }
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        ExceptionEventLog.RegiterErrorToLogRegitry(ex);
+                    }
                 }
-                reader.Close();
-
 
             }
-            catch (Exception ex)
-            {
-
-            }
-            finally
-            {
-                connection.Close();
-            }
-
-            return dt;
+                return dt;
 
         }
 
         public static bool UpdateTestTypes(int TestTypeID, string TestTypeTitle, string TestTypeDescription, double TestTypeFees)
         {
 
-            SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString);
-
-            string Query = @"Update TestTypes
-                              Set TestTypeTitle = @TestTypeTitle,
-                                  TestTypeDescription = @TestTypeDescription,
-                                  TestTypeFees = @TestTypeFees
-                              Where TestTypeID = @TestTypeID ;";
-
-            SqlCommand cmd = new SqlCommand(Query, connection);
-
-            cmd.Parameters.AddWithValue("@TestTypeTitle", TestTypeTitle);
-            cmd.Parameters.AddWithValue("@TestTypeDescription", TestTypeDescription);
-            cmd.Parameters.AddWithValue("@TestTypeFees", TestTypeFees);
-            cmd.Parameters.AddWithValue("@TestTypeID", TestTypeID);
-
             int RowsAffected = 0;
-
-            try
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
             {
 
-                connection.Open();
+                using (SqlCommand cmd = new SqlCommand("SP_UpdateTestType", connection))
+                {
 
-                RowsAffected = cmd.ExecuteNonQuery();
+                    cmd.Parameters.AddWithValue("@TestTypeTitle", TestTypeTitle);
+                    cmd.Parameters.AddWithValue("@TestTypeDescription", TestTypeDescription);
+                    cmd.Parameters.AddWithValue("@TestTypeFees", TestTypeFees);
+                    cmd.Parameters.AddWithValue("@TestTypeID", TestTypeID);
+
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    try
+                    {
+
+                        connection.Open();
+
+                        RowsAffected = cmd.ExecuteNonQuery();
+
+                    }
+                    catch (Exception ex)
+                    {
+                        ExceptionEventLog.RegiterErrorToLogRegitry(ex);
+                    }
+                }
 
             }
-            catch (Exception ex)
-            {
 
-            }
-            finally
-            {
-                connection.Close();
-            }
-            return (RowsAffected > 0);
+
+                return (RowsAffected > 0);
 
 
 
@@ -92,39 +87,44 @@ namespace DVLD_DataAccessLayer
 
         public static bool FindTestType(int TestTypeID, ref string TestTypeTitle, ref string TestTypeDescription, ref double TestTypeFees)
         {
-            SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString);
-
-            string Query = "select * from TestTypes Where TestTypeID = @TestTypeID;";
-
-            SqlCommand command = new SqlCommand(Query, connection);
-
-            command.Parameters.AddWithValue("@TestTypeID", TestTypeID);
-
             bool isfound = true;
-            try
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
             {
-                connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
 
-                if (reader.Read())
+                using (SqlCommand command = new SqlCommand("SP_FindTestTypes", connection))
                 {
-                    TestTypeTitle = (string)reader["TestTypeTitle"];
-                    TestTypeDescription = (string)reader["TestTypeDescription"];
-                    TestTypeFees = Convert.ToDouble(reader["TestTypeFees"]);
 
+                    command.Parameters.AddWithValue("@TestTypeID", TestTypeID);
+
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+
+                            if (reader.Read())
+                            {
+                                TestTypeTitle = (string)reader["TestTypeTitle"];
+                                TestTypeDescription = (string)reader["TestTypeDescription"];
+                                TestTypeFees = Convert.ToDouble(reader["TestTypeFees"]);
+
+                            }
+                        }
+
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        ExceptionEventLog.RegiterErrorToLogRegitry(ex);
+                        return false;
+                    }
                 }
-                reader.Close();
 
             }
-            catch (Exception ex)
-            {
-                return false;
-            }
-            finally
-            {
-                connection.Close();
-            }
-            return isfound;
+
+
+                return isfound;
         }
 
 
