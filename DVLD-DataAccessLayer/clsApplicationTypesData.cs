@@ -52,7 +52,7 @@ namespace DVLD_DataAccessLayer
                 return dt;
 
         }
-        public static bool UpdateAplicationTypes(int ApplicationID, string ApplicationTitle, double ApplicationFees)
+        public static bool UpdateAplicationTypes(int ApplicationTypeID, string ApplicationTitle, double ApplicationFees)
         {
 
             int RowsAffected = 0;
@@ -61,9 +61,9 @@ namespace DVLD_DataAccessLayer
 
                 using (SqlCommand cmd = new SqlCommand("SP_UpdateApplicationTypes", connection))
                 {
-                    cmd.Parameters.AddWithValue("@ApplicationTitle", ApplicationTitle);
+                    cmd.Parameters.AddWithValue("@ApplicationTypeTitle", ApplicationTitle);
                     cmd.Parameters.AddWithValue("@ApplicationFees", ApplicationFees);
-                    cmd.Parameters.AddWithValue("@ApplicationID", ApplicationID);
+                    cmd.Parameters.AddWithValue("@ApplicationTypeID", ApplicationTypeID);
 
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -100,7 +100,7 @@ namespace DVLD_DataAccessLayer
                 using (SqlCommand command = new SqlCommand("SP_FindApplicationType", connection))
                 {
 
-                    command.Parameters.AddWithValue("@ApplicationID", ApplicationTypeID);
+                    command.Parameters.AddWithValue("@ApplicationTypeID", ApplicationTypeID);
                     command.CommandType = CommandType.StoredProcedure;
 
                     try

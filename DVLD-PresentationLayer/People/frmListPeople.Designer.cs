@@ -106,7 +106,6 @@
             this.dgvShowPeople.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvShowPeople.Size = new System.Drawing.Size(1464, 280);
             this.dgvShowPeople.TabIndex = 11;
-            this.dgvShowPeople.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvShowPeople_CellClick);
             // 
             // contextMenuStrip1
             // 
@@ -245,10 +244,10 @@
             "None",
             "PersonID",
             "NationalNo",
-            "FirstName",
-            "SecondName",
-            "ThirdName",
-            "LastName",
+            "Firstname",
+            "Secondname",
+            "Thirdname",
+            "Lastname",
             "Nationality",
             "Gender",
             "Phone",

@@ -247,7 +247,7 @@ namespace DVLD_PresentationLayer
             }
             else
             {
-                _dtPeople.DefaultView.RowFilter = string.Format("[{0}] Like '{1}%'", FilterColumn, tbFilterBy.Text.Trim());
+                _dtPeople.DefaultView.RowFilter = string.Format("[{0}] LIKE '{1}%'", FilterColumn, tbFilterBy.Text.Trim());
             }
             statusStrip1.Text = $"# Records: {dgvShowPeople.Rows.Count}";
 

@@ -59,7 +59,7 @@ namespace DVLD_DataAccessLayer
 
 
 
-        public static bool Find(string ClassName, ref int LicenseClassID,  ref string ClassDesciption, ref short MinimumAllowedAge,
+        public static bool Find(string ClassName, ref int LicenseClassID,  ref string ClassDescription, ref short MinimumAllowedAge,
             ref short DefaultValidityLength, ref float ClassFees)
         {
             bool IsFound = true;
@@ -69,7 +69,9 @@ namespace DVLD_DataAccessLayer
                 using (SqlCommand command = new SqlCommand("SP_FindLicenseClassesByClassname", connection))
                 {
 
-                    command.Parameters.AddWithValue("@ClassName", ClassName);
+                    command.Parameters.AddWithValue("@Classname", ClassName);
+                    command.CommandType = CommandType.StoredProcedure;
+
 
                     try
                     {
@@ -83,10 +85,11 @@ namespace DVLD_DataAccessLayer
                             {
 
                                 LicenseClassID = (int)reader["LicenseClassID"];
-                                ClassDesciption = (string)reader["ClassDesciption"];
+                                ClassDescription = (string)reader["ClassDescription"];
                                 MinimumAllowedAge = (short)reader["MinimumAllowedAge"];
                                 DefaultValidityLength = (short)reader["DefaultValidityLength"];
                                 ClassFees = (float)reader["ClassFees"];
+                               
                             }
                         }
 

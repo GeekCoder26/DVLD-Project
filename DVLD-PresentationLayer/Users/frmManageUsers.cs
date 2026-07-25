@@ -182,7 +182,7 @@ namespace DVLD_PresentationLayer.Users
                 case "Person ID":
                     filtercolumn = "PersonID";
                     break;
-                case "username":
+                case "Username":
                     filtercolumn = "username";
                     break;
                 case "IsActive":

@@ -85,7 +85,7 @@
             // 
             // tpPersonalInfo
             // 
-            this.tpPersonalInfo.BackColor = System.Drawing.Color.Gainsboro;
+            this.tpPersonalInfo.BackColor = System.Drawing.Color.White;
             this.tpPersonalInfo.Controls.Add(this.ctrlPersonDetailsWithFilter1);
             this.tpPersonalInfo.Controls.Add(this.btnNext);
             this.tpPersonalInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -98,6 +98,7 @@
             // 
             // ctrlPersonDetailsWithFilter1
             // 
+            this.ctrlPersonDetailsWithFilter1.BackColor = System.Drawing.Color.White;
             this.ctrlPersonDetailsWithFilter1.EnableFilter = true;
             this.ctrlPersonDetailsWithFilter1.Location = new System.Drawing.Point(15, 15);
             this.ctrlPersonDetailsWithFilter1.Name = "ctrlPersonDetailsWithFilter1";
@@ -121,7 +122,7 @@
             // 
             // tpApplicationInfo
             // 
-            this.tpApplicationInfo.BackColor = System.Drawing.Color.Gainsboro;
+            this.tpApplicationInfo.BackColor = System.Drawing.Color.White;
             this.tpApplicationInfo.Controls.Add(this.cmbLicenseClass);
             this.tpApplicationInfo.Controls.Add(this.lblUserID);
             this.tpApplicationInfo.Controls.Add(this.lblApplicationFees);
@@ -332,6 +333,7 @@
             // frmAddNewLocalLicenseApp
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(957, 638);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnSave);

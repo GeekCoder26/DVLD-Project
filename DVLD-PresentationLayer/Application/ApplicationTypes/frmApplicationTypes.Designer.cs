@@ -63,7 +63,7 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.editApplicationTypesToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(294, 42);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(294, 70);
             // 
             // editApplicationTypesToolStripMenuItem
             // 

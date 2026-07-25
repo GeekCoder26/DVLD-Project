@@ -58,7 +58,7 @@ namespace DVLD_PresentationLayer.ApplicationTypes
                 return;
             }
 
-            AppTypes._ApplicationID = int.Parse(lblAppID.ToString());
+            AppTypes._ApplicationID = int.Parse(lblAppID.Text);
             AppTypes._ApplicationTitle = txbAppTitle.Text;
             AppTypes._ApplicationFees = Convert.ToSingle(txbAppFees.Text);
 

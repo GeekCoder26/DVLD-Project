@@ -216,6 +216,7 @@ namespace DVLD_DataAccessLayer
                 using (SqlCommand command = new SqlCommand("SP_FindUserByUsername", connection))
                 {
                     command.Parameters.AddWithValue("@Username", Username);
+                    command.CommandType = CommandType.StoredProcedure;
 
 
                     try

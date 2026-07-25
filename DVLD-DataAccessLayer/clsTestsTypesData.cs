@@ -95,6 +95,8 @@ namespace DVLD_DataAccessLayer
                 {
 
                     command.Parameters.AddWithValue("@TestTypeID", TestTypeID);
+                    command.CommandType = CommandType.StoredProcedure;
+
 
                     try
                     {
