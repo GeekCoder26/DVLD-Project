@@ -15,7 +15,7 @@ namespace DVLD_DataAccessLayer
 
 
         public static bool Find(int LicenseClassID, ref string ClassName, ref string ClassDesciption, ref short MinimumAllowedAge,
-            ref short DefaultValidityLength, ref float ClassFees)
+            ref short DefaultValidityLength, ref decimal ClassFees)
         {
             bool IsFound = true;
             using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
@@ -40,7 +40,7 @@ namespace DVLD_DataAccessLayer
                                 ClassDesciption = (string)reader["ClassDesciption"];
                                 MinimumAllowedAge = (short)reader["MinimumAllowedAge"];
                                 DefaultValidityLength = (short)reader["DefaultValidityLength"];
-                                ClassFees = (float)reader["ClassFees"];
+                                ClassFees = (decimal)reader["ClassFees"];
                             }
                         }
 
@@ -60,7 +60,7 @@ namespace DVLD_DataAccessLayer
 
 
         public static bool Find(string ClassName, ref int LicenseClassID,  ref string ClassDescription, ref short MinimumAllowedAge,
-            ref short DefaultValidityLength, ref float ClassFees)
+            ref short DefaultValidityLength, ref decimal ClassFees)
         {
             bool IsFound = true;
             using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
@@ -88,7 +88,7 @@ namespace DVLD_DataAccessLayer
                                 ClassDescription = (string)reader["ClassDescription"];
                                 MinimumAllowedAge = (short)reader["MinimumAllowedAge"];
                                 DefaultValidityLength = (short)reader["DefaultValidityLength"];
-                                ClassFees = (float)reader["ClassFees"];
+                                ClassFees = (decimal)reader["ClassFees"];
                                
                             }
                         }

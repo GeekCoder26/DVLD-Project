@@ -22,8 +22,8 @@ namespace DVLD_PresentationLayer.Application.Local_Driving_License
         int _LocalDrivingLicenseApplicationID = -1;
         int _SelectedPersonID = -1;
 
-        clsApplication Application;
-        ClsLocalDrivingLicenseApplication _LocalDrivingLicenseApplication;
+        clsApplication Application = new clsApplication();
+        ClsLocalDrivingLicenseApplication _LocalDrivingLicenseApplication = new ClsLocalDrivingLicenseApplication();
          
         public frmAddNewLocalLicenseApp()
         {
@@ -137,7 +137,7 @@ namespace DVLD_PresentationLayer.Application.Local_Driving_License
 
             if (ActiveApplicationID != -1)
             {
-                MessageBox.Show("Choose Another License Class, The Selected Person Already Exist","Person Already Exist", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Show("Choose Another License Class, The Selected Person have already an active application for the selected class","Application Already Exist", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 return;
             }
 
@@ -159,8 +159,10 @@ namespace DVLD_PresentationLayer.Application.Local_Driving_License
             _LocalDrivingLicenseApplication._ApplicationTypeID = 1;
             _LocalDrivingLicenseApplication.applicationStatus = clsApplication.enApplicationStatus.New;
             _LocalDrivingLicenseApplication._LastStatusDate = DateTime.Now;
-            Application._PaidFees = Convert.ToSingle(lblApplicationFees.Text);
-            Application._UserID = clsGlobalSettings.User._UserID;
+            //Application._PaidFees = Convert.ToDecimal(lblApplicationFees.Text);
+            _LocalDrivingLicenseApplication._PaidFees = Convert.ToDecimal(lblApplicationFees.Text);
+            //Application._UserID = clsGlobalSettings.User._UserID;
+            _LocalDrivingLicenseApplication._UserID = clsGlobalSettings.User._UserID;
             _LocalDrivingLicenseApplication.LicenseClassID = LicenseClassID;
 
             
@@ -190,7 +192,7 @@ namespace DVLD_PresentationLayer.Application.Local_Driving_License
 
         private void frmAddNewLocalLicenseApp_Activated(object sender, EventArgs e)
         {
-            ctrlPersonDetailsWithFilter1.FilterFocus();
+            //ctrlPersonDetailsWithFilter1.FilterFocus();
         }
     }
 }

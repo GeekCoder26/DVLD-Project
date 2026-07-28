@@ -144,10 +144,12 @@ namespace DVLD_DataAccessLayer
             {
                 using (SqlCommand command = new SqlCommand("SP_AddNewLocalDriving", connection))
                 {
-                    command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
-                    command.Parameters.AddWithValue("@LisenceClassID", LisenceClassID);
+                    command.CommandType = CommandType.StoredProcedure;
 
-                    var outParam = new SqlParameter("@LocaDrivingLicenseApplicationID", SqlDbType.Int)
+                    command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
+                    command.Parameters.AddWithValue("@LicenseClassID", LisenceClassID);
+
+                    var outParam = new SqlParameter("@LocalDrivingLicenseApplicationID", SqlDbType.Int)
                     {
                         Direction = ParameterDirection.Output
                     };

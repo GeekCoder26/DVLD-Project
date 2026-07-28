@@ -60,7 +60,7 @@ namespace DVLD_PresentationLayer.ApplicationTypes
 
             AppTypes._ApplicationID = int.Parse(lblAppID.Text);
             AppTypes._ApplicationTitle = txbAppTitle.Text;
-            AppTypes._ApplicationFees = Convert.ToSingle(txbAppFees.Text);
+            AppTypes._ApplicationFees = Convert.ToDecimal(txbAppFees.Text);
 
             if(AppTypes.Save())
             {

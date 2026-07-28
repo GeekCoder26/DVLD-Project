@@ -15,11 +15,11 @@ namespace DVLD_BusinessLayer
 
         public string _ApplicationTitle { get; set; }
 
-        public float _ApplicationFees { get; set;}
+        public decimal _ApplicationFees { get; set;}
 
         public clsApplicationTypes Types;
 
-        private clsApplicationTypes(int ApplicationID, string ApplicationTitle, float ApplicationFees)
+        private clsApplicationTypes(int ApplicationID, string ApplicationTitle, decimal ApplicationFees)
         {
             _ApplicationID = ApplicationID;
             _ApplicationTitle = ApplicationTitle;
@@ -48,7 +48,7 @@ namespace DVLD_BusinessLayer
         public static clsApplicationTypes FindApplicationType(int ApplicationTypeID)
         {
             string ApplicationTitle = "";
-            float ApplicationFees = 0;
+            decimal ApplicationFees = 0;
 
             if(clsApplicationTypesData.FindApplicationType(ApplicationTypeID, ref ApplicationTitle, ref ApplicationFees))
             {

@@ -52,7 +52,7 @@ namespace DVLD_DataAccessLayer
                 return dt;
 
         }
-        public static bool UpdateAplicationTypes(int ApplicationTypeID, string ApplicationTitle, double ApplicationFees)
+        public static bool UpdateAplicationTypes(int ApplicationTypeID, string ApplicationTitle, decimal ApplicationFees)
         {
 
             int RowsAffected = 0;
@@ -91,7 +91,7 @@ namespace DVLD_DataAccessLayer
 
         }
 
-        public static bool FindApplicationType(int ApplicationTypeID, ref string ApplicationTitle, ref float ApplicationFees)
+        public static bool FindApplicationType(int ApplicationTypeID, ref string ApplicationTitle, ref decimal ApplicationFees)
         {
             bool isfound = true;
             using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
@@ -112,7 +112,7 @@ namespace DVLD_DataAccessLayer
                             if (reader.Read())
                             {
                                 ApplicationTitle = (string)reader["ApplicationTypeTitle"];
-                                ApplicationFees = Convert.ToSingle(reader["ApplicationFees"]);
+                                ApplicationFees = Convert.ToDecimal(reader["ApplicationFees"]);
 
                             }
 

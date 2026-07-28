@@ -51,7 +51,7 @@ namespace DVLD_DataAccessLayer
         }
 
         public static int AddNewApplication(int PersonID, DateTime ApplicationDate, int ApplicationTypeID,
-                                            byte ApplicationStatus, DateTime LastStatusDate, float PaidFees,
+                                            byte ApplicationStatus, DateTime LastStatusDate, decimal PaidFees,
                                             int UserID)
         {
             int ApplicationID = -1;
@@ -60,6 +60,7 @@ namespace DVLD_DataAccessLayer
 
                 using (SqlCommand command = new SqlCommand("SP_AddNewApplication", connection))
                 {
+                    command.CommandType = CommandType.StoredProcedure;
 
                     command.Parameters.AddWithValue("@ApplicantPersonID", PersonID);
                     command.Parameters.AddWithValue("@ApplicationDate", ApplicationDate);
@@ -106,7 +107,7 @@ namespace DVLD_DataAccessLayer
 
         public static bool UpdateApplication(int ApplicationID, int PersonID, DateTime ApplicationDate,
                                              int ApplicationTypeID, byte ApplicationStatus,
-                                             DateTime LastStatusDate, float PaidFees, int UserID)
+                                             DateTime LastStatusDate, decimal PaidFees, int UserID)
         {
 
             int RowsAffected = 0;
@@ -181,7 +182,7 @@ namespace DVLD_DataAccessLayer
 
         public static bool FindApplication(int ApplicationID, ref int PersonID, ref DateTime ApplicationDate,
                                            ref int ApplicationTypeID, ref byte ApplicationStatus,ref DateTime LastStatusDate,
-                                           ref float PaidFees, ref int UserID)
+                                           ref decimal PaidFees, ref int UserID)
         {
             bool IsFound = true;
             using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
@@ -206,7 +207,7 @@ namespace DVLD_DataAccessLayer
                                 ApplicationTypeID = (int)reader["ApplicationTypeID"];
                                 ApplicationStatus = (byte)reader["ApplicationStatus"];
                                 LastStatusDate = (DateTime)reader["LastStatusDate"];
-                                PaidFees = (float)reader["PaidFees"];
+                                PaidFees = (decimal)reader["PaidFees"];
                                 UserID = (int)reader["CreatedByUserID"];
                             }
                         }

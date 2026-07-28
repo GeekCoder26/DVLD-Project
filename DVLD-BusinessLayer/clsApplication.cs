@@ -53,38 +53,38 @@ namespace DVLD_BusinessLayer
             }
         }
         public DateTime _LastStatusDate { get; set; }
-        public float _PaidFees { get; set; }
+        public decimal _PaidFees { get; set; } = 0;
         public int _UserID { get; set; }
         public clsUsers UserInfo { get; set; }
 
         clsApplicationTypes ApplicationTypes;
 
-        private clsApplication(int ApplicationID, int PersonID, DateTime ApplicationDate, int ApplicationTypeID, enApplicationStatus ApplicationStatus, DateTime LastStatusDate, 
-                               float PaidFees, int UserID)
+        protected clsApplication(int ApplicationID, int PersonID, DateTime ApplicationDate, int ApplicationTypeID, enApplicationStatus ApplicationStatus, DateTime LastStatusDate, 
+                               decimal PaidFees, int UserID)
         {
-            _ApplicationID = ApplicationID;
+            this._ApplicationID = ApplicationID;
 
-            _PersonID = PersonID;
+            this._PersonID = PersonID;
 
-            PersonInfo = clsPerson.FindPerson(PersonID);
+            this.PersonInfo = clsPerson.FindPerson(PersonID);
 
-            _ApplicationDate = ApplicationDate;
+            this._ApplicationDate = ApplicationDate;
 
-            _ApplicationTypeID = ApplicationTypeID;
+            this._ApplicationTypeID = ApplicationTypeID;
 
-            ApplicationTypeInfo = clsApplicationTypes.FindApplicationType(ApplicationTypeID);
+            this.ApplicationTypeInfo = clsApplicationTypes.FindApplicationType(ApplicationTypeID);
 
-            applicationStatus = ApplicationStatus;
+            this.applicationStatus = ApplicationStatus;
 
-            _LastStatusDate = LastStatusDate;
+            this._LastStatusDate = LastStatusDate;
 
-            _PaidFees = PaidFees;
+            this._PaidFees = PaidFees;
 
-            _UserID = UserID;
+            this._UserID = UserID;
 
-            UserInfo = clsUsers.FindUser(UserID);
+            this.UserInfo = clsUsers.FindUser(UserID);
 
-            Mode = enMode.Update;
+            this.Mode = enMode.Update;
         }
 
         public clsApplication()
@@ -138,7 +138,7 @@ namespace DVLD_BusinessLayer
             int PersonID = -1, ApplicationTypeID = -1, UserID = -1;
             DateTime ApplicationDate = DateTime.Now, LastStatusDate = DateTime.Now;
             byte ApplicationStatus = 0;
-            float PaidFees = 0;
+            decimal PaidFees = 0;
 
             if(clsApplicationsData.FindApplication(ApplicationID, ref PersonID, ref ApplicationDate, ref ApplicationTypeID, ref ApplicationStatus,
                 ref LastStatusDate, ref PaidFees, ref UserID))
