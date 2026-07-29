@@ -82,11 +82,12 @@ namespace DVLD_DataAccessLayer
                     {
                         connection.Open();
 
-                        object result = command.ExecuteScalar();
+                       command.ExecuteNonQuery();
 
-                        if (result != null && int.TryParse(result.ToString(), out int ReturnedID))
+                        if (outParam.Value != DBNull.Value && outParam.Value != null)
                         {
-                            ApplicationID = ReturnedID;
+                            ApplicationID = (int)outParam.Value;
+                            // ...
                         }
 
 

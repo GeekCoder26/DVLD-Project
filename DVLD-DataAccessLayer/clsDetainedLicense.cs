@@ -1,15 +1,16 @@
-﻿using System;
+﻿using DVLD_DataAccessLayer;
+using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
+using System.Net;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using static DVLD_DataAccessLayer.clsCountriesData;
-using System.Net;
-using System.Security.Policy;
-using System.Configuration;
-using DVLD_DataAccessLayer;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace DVLD_DataAccess
 {
@@ -224,15 +225,22 @@ namespace DVLD_DataAccess
 
                     command.CommandType = CommandType.StoredProcedure;
 
+                    var outParam = new SqlParameter("@DetainID", SqlDbType.Int)
+                    {
+                        Direction = ParameterDirection.Output
+                    };
+                    command.Parameters.Add(outParam);
+
                     try
                     {
                         connection.Open();
 
-                        object result = command.ExecuteScalar();
+                       command.ExecuteNonQuery();
 
-                        if (result != null && int.TryParse(result.ToString(), out int insertedID))
+                        if (outParam.Value != DBNull.Value && outParam.Value != null)
                         {
-                            DetainID = insertedID;
+                            DetainID = (int)outParam.Value;
+                            // ...
                         }
                     }
 

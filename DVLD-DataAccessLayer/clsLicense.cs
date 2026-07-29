@@ -209,11 +209,12 @@ namespace DVLD_DataAccess
                     {
                         connection.Open();
 
-                        object result = command.ExecuteScalar();
+                       command.ExecuteNonQuery();
 
-                        if (result != null && int.TryParse(result.ToString(), out int insertedID))
+                        if (outParam.Value != DBNull.Value && outParam.Value != null)
                         {
-                            LicenseID = insertedID;
+                            LicenseID = (int)outParam.Value;
+                            // ...
                         }
                     }
 

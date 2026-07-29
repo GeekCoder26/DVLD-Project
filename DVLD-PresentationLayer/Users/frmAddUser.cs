@@ -70,7 +70,7 @@ namespace DVLD_PresentationLayer.Users
         }
         private void UpdateUser()
         {
-            NewUser = clsUsers.FindUser(_UserID);
+            NewUser = clsUsers.FindUserByUserID(_UserID);
 
             if (NewUser == null)
             {

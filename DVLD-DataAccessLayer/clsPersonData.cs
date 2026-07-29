@@ -69,6 +69,7 @@ namespace DVLD_DataAccessLayer
 
             using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
             {
+                int PersonID = -1;
                 using (SqlCommand command = new SqlCommand("SP_AddNewPerson", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
@@ -97,9 +98,13 @@ namespace DVLD_DataAccessLayer
                         connection.Open();
 
                         command.ExecuteNonQuery();
-                        var result = command.Parameters["@PersonID"].Value;
-                        if (result == null || result == DBNull.Value) return 0;
-                        return Convert.ToInt32(result);
+
+                        if (outParam.Value != DBNull.Value && outParam.Value != null)
+                        {
+                            PersonID = (int)outParam.Value;
+                            // ...
+                        }
+                        
 
 
 
@@ -109,8 +114,9 @@ namespace DVLD_DataAccessLayer
                         ExceptionEventLog.RegiterErrorToLogRegitry(ex);
                         return -1;
                     }
-                }
 
+                }
+                return PersonID;
             }
 
         }

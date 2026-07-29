@@ -136,7 +136,7 @@ namespace DVLD_PresentationLayer.Users
         {
             ResetDefaultPassword();
 
-            UserInfo = clsUsers.FindUser(_UserID);
+            UserInfo = clsUsers.FindUserByUserID(_UserID);
 
             if (UserInfo == null)
             {

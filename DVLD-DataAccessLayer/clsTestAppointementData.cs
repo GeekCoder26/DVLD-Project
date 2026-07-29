@@ -237,21 +237,22 @@ namespace DVLD_DataAccessLayer
                     command.Parameters.AddWithValue("@IsLocked", IsLocked);
                     command.Parameters.AddWithValue("@RetakeTestAppointmentID", RetakeTestAppointmentID);
 
-                    var outparam = new SqlParameter("@TestAppointmentID", SqlDbType.Int)
+                    var outParam = new SqlParameter("@TestAppointmentID", SqlDbType.Int)
                     {
                         Direction = ParameterDirection.Output
                     };
-                    command.Parameters.Add(outparam);
+                    command.Parameters.Add(outParam);
 
                     try
                     {
                         Connection.Open();
 
-                        object Result = command.ExecuteScalar();
+                       command.ExecuteNonQuery();
 
-                        if (Result != null && int.TryParse(Result.ToString(), out int ReturnedID))
+                        if (outParam.Value != DBNull.Value && outParam.Value != null)
                         {
-                            TestAppointmentID = ReturnedID;
+                            TestAppointmentID = (int)outParam.Value;
+                            // ...
                         }
 
                     }

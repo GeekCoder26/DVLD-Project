@@ -58,7 +58,7 @@ namespace DVLD_PresentationLayer.Application.Local_Driving_License
             lblApplicationDate.Text = _LocalDrivingLicenseApplication._ApplicationDate.ToString();
             cmbLicenseClass.SelectedIndex = cmbLicenseClass.FindString(clsLicenseClass.Find(_LocalDrivingLicenseApplication.LicenseClassID)._ClassName);
             lblApplicationFees.Text = _LocalDrivingLicenseApplication._PaidFees.ToString();
-            lblUserID.Text = clsUsers.FindUser(_LocalDrivingLicenseApplication._UserID)._UserName;
+            lblUserID.Text = clsUsers.FindUserByUserID(_LocalDrivingLicenseApplication._UserID)._UserName;
             
 
 

@@ -178,7 +178,7 @@ namespace DVLD_PresentationLayer.Tests.Controls
 
             }
 
-            lblTotalFees.Text = Convert.ToSingle(lblFees.Text) + Convert.ToSingle(lblReakeAppFees).ToString();
+            lblTotalFees.Text = Convert.ToDecimal(lblFees.Text) + Convert.ToDecimal(lblReakeAppFees).ToString();
 
             if (!_HandleActiveTestAppointmentConstraint())
                 return;
@@ -324,7 +324,7 @@ namespace DVLD_PresentationLayer.Tests.Controls
             _TestAppointment._TestTypeID = _TestTypeID;
             _TestAppointment._LocalDrivingLicenseApplicationID = _LocalDrivingLicenseApplication.LocalDrivingLicenseApplicationID;
             _TestAppointment._AppointmentDate = dtpDate.Value;
-            _TestAppointment._PaidFees = Convert.ToSingle(lblFees.Text);
+            _TestAppointment._PaidFees = Convert.ToDecimal(lblFees.Text);
             _TestAppointment._UserID = clsGlobalSettings.User._UserID;
 
             if (_TestAppointment.Save())

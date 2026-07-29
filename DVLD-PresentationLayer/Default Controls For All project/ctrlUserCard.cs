@@ -70,7 +70,7 @@ namespace DVLD_PresentationLayer.Default_Controls_For_All_project
                  ctrlPersonDetails1.LoadPersonInfo(PersonID);
             }
 
-            UserInfo = clsUsers.FindUser(UserID);
+            UserInfo = clsUsers.FindUserByUserID(UserID);
 
             if (UserInfo == null)
             {

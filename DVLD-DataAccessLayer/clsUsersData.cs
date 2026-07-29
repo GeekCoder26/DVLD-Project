@@ -48,8 +48,8 @@ namespace DVLD_DataAccessLayer
 
         public static int AddUser(int PersonID, string Username, string Password, bool isActive)
         {
-            
 
+            int UserID = -1;
             using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
             {
 
@@ -72,9 +72,13 @@ namespace DVLD_DataAccessLayer
                     {
                         connection.Open();
                         command.ExecuteNonQuery();
-                        var result = command.Parameters["@PersonID"].Value;
-                        if (result == null || result == DBNull.Value) return -1;
-                        return Convert.ToInt32(result);
+
+                        if (outParam.Value != DBNull.Value && outParam.Value != null)
+                        {
+                            UserID = (int)outParam.Value;
+                            // ...
+                        }
+                        
 
 
 
@@ -88,7 +92,7 @@ namespace DVLD_DataAccessLayer
 
                 
             }
-
+            return UserID;
             
 
         }
