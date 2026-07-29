@@ -22,51 +22,53 @@ namespace DVLD_DataAccess
             {
                 bool isFound = false;
 
-                SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString);
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
+            {
 
-                string query = "SELECT * FROM Drivers WHERE DriverID = @DriverID";
-
-                SqlCommand command = new SqlCommand(query, connection);
-
-                command.Parameters.AddWithValue("@DriverID", DriverID);
-
-                try
+                using (SqlCommand command = new SqlCommand("SP_GetDriverInfoByDriverID", connection))
                 {
-                    connection.Open();
-                    SqlDataReader reader = command.ExecuteReader();
 
-                    if (reader.Read())
+                    command.Parameters.AddWithValue("@DriverID", DriverID);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    try
                     {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
 
-                        // The record was found
-                        isFound = true;
+                            if (reader.Read())
+                            {
 
-                    PersonID = (int)reader["PersonID"];
-                    CreatedByUserID = (int)reader["CreatedByUserID"];
-                    CreatedDate = (DateTime)reader["CreatedDate"];
+                                // The record was found
+                                isFound = true;
+
+                                PersonID = (int)reader["PersonID"];
+                                CreatedByUserID = (int)reader["CreatedByUserID"];
+                                CreatedDate = (DateTime)reader["CreatedDate"];
 
 
-                }
-                    else
+                            }
+                            else
+                            {
+                                // The record was not found
+                                isFound = false;
+                            }
+                        }
+
+                    }
+                    catch (Exception ex)
                     {
-                        // The record was not found
+                        //Console.WriteLine("Error: " + ex.Message);
+                        ExceptionEventLog.RegiterErrorToLogRegitry(ex);
                         isFound = false;
                     }
 
-                    reader.Close();
+                }
+                
+            }
 
 
-                }
-                catch (Exception ex)
-                {
-                    //Console.WriteLine("Error: " + ex.Message);
-                    ExceptionEventLog.RegiterErrorToLogRegitry(ex);
-                    isFound = false;
-                }
-                finally
-                {
-                    connection.Close();
-                }
 
                 return isFound;
             }
@@ -76,50 +78,57 @@ namespace DVLD_DataAccess
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString);
-
-            string query = "SELECT * FROM Drivers WHERE PersonID = @PersonID";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
-            command.Parameters.AddWithValue("@PersonID", PersonID);
-
-            try
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
             {
-                connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
 
-                if (reader.Read())
+
+                using (SqlCommand command = new SqlCommand("SP_GetDriverInfoByPersonID", connection))
                 {
 
-                    // The record was found
-                    isFound = true;
+                    command.Parameters.AddWithValue("@PersonID", PersonID);
+                    command.CommandType = CommandType.StoredProcedure;
 
-                    DriverID = (int)reader["DriverID"];
-                    CreatedByUserID = (int)reader["CreatedByUserID"];
-                    CreatedDate = (DateTime)reader["CreatedDate"];
 
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+
+                            if (reader.Read())
+                            {
+
+                                // The record was found
+                                isFound = true;
+
+                                DriverID = (int)reader["DriverID"];
+                                CreatedByUserID = (int)reader["CreatedByUserID"];
+                                CreatedDate = (DateTime)reader["CreatedDate"];
+
+                            }
+                            else
+                            {
+                                // The record was not found
+                                isFound = false;
+                            }
+
+
+                        }
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        //Console.WriteLine("Error: " + ex.Message);
+                        ExceptionEventLog.RegiterErrorToLogRegitry(ex);
+                        isFound = false;
+                    }
                 }
-                else
-                {
-                    // The record was not found
-                    isFound = false;
-                }
-
-                reader.Close();
 
 
             }
-            catch (Exception ex)
-            {
-                //Console.WriteLine("Error: " + ex.Message);
-                ExceptionEventLog.RegiterErrorToLogRegitry(ex);
-                isFound = false;
-            }
-            finally
-            {
-                connection.Close();
-            }
+
+
 
             return isFound;
         }
@@ -128,38 +137,42 @@ namespace DVLD_DataAccess
             {
 
                 DataTable dt = new DataTable();
-                SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString);
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
+            {
 
-                string query = "SELECT * FROM Drivers_View order by FullName";
-           
-                SqlCommand command = new SqlCommand(query, connection);
-
-                try
+                using (SqlCommand command = new SqlCommand("SP_GetAllDrivers", connection))
                 {
-                    connection.Open();
+                    command.CommandType = CommandType.StoredProcedure;
 
-                    SqlDataReader reader = command.ExecuteReader();
-
-                    if (reader.HasRows)
-
+                    try
                     {
-                        dt.Load(reader);
+                        connection.Open();
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+
+                            if (reader.HasRows)
+                            {
+                                dt.Load(reader);
+                            }
+
+                        }
+
+
+
+
                     }
 
-                    reader.Close();
-
-
+                    catch (Exception ex)
+                    {
+                        // Console.WriteLine("Error: " + ex.Message);
+                        ExceptionEventLog.RegiterErrorToLogRegitry(ex);
+                    }
                 }
 
-                catch (Exception ex)
-                {
-                    // Console.WriteLine("Error: " + ex.Message);
-                    ExceptionEventLog.RegiterErrorToLogRegitry(ex);
-                }
-                finally
-                {
-                    connection.Close();
-                }
+            }
+
+
 
                 return dt;
 
@@ -169,43 +182,47 @@ namespace DVLD_DataAccess
         {
             int DriverID = -1;
 
-            SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString);
-
-            string query = @"Insert Into Drivers (PersonID,CreatedByUserID,CreatedDate)
-                            Values (@PersonID,@CreatedByUserID,@CreatedDate);
-                          
-                            SELECT SCOPE_IDENTITY();";
-         
-
-            SqlCommand command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("@PersonID", PersonID);
-            command.Parameters.AddWithValue("@CreatedByUserID", CreatedByUserID);
-            command.Parameters.AddWithValue("@CreatedDate", DateTime.Now);
-            try
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
             {
-                connection.Open();
 
-                object result = command.ExecuteScalar();
-
-                if (result != null && int.TryParse(result.ToString(), out int insertedID))
+                using (SqlCommand command = new SqlCommand("SP_AddNewDriver", connection))
                 {
-                    DriverID = insertedID;
+                    command.Parameters.AddWithValue("@PersonID", PersonID);
+                    command.Parameters.AddWithValue("@CreatedByUserID", CreatedByUserID);
+                    command.Parameters.AddWithValue("@CreatedDate", DateTime.Now);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    var outParam = new SqlParameter("@DriverID", SqlDbType.Int)
+                    {
+                        Direction = ParameterDirection.Output
+                    };
+                    command.Parameters.Add(outParam);
+
+                    try
+                    {
+                        connection.Open();
+
+                        object result = command.ExecuteScalar();
+
+                        if (result != null && int.TryParse(result.ToString(), out int insertedID))
+                        {
+                            DriverID = insertedID;
+                        }
+                    }
+
+                    catch (Exception ex)
+                    {
+                        //Console.WriteLine("Error: " + ex.Message);
+                        ExceptionEventLog.RegiterErrorToLogRegitry(ex);
+                    }
                 }
-            }
-
-            catch (Exception ex)
-            {
-                //Console.WriteLine("Error: " + ex.Message);
-                ExceptionEventLog.RegiterErrorToLogRegitry(ex);
-            }
-
-            finally
-            {
-                connection.Close();
+                
             }
 
 
-            return DriverID;
+
+
+                return DriverID;
 
         }
 
@@ -213,38 +230,38 @@ namespace DVLD_DataAccess
         {
 
             int rowsAffected = 0;
-            SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString);
-            //we dont update the createddate for the driver.
-            string query = @"Update  Drivers  
-                            set PersonID = @PersonID,
-                                CreatedByUserID = @CreatedByUserID
-                                where DriverID = @DriverID";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
-            command.Parameters.AddWithValue("@DriverID", DriverID);
-            command.Parameters.AddWithValue("@PersonID", PersonID);
-            command.Parameters.AddWithValue("@CreatedByUserID", CreatedByUserID);
-           
-            try
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
             {
-                connection.Open();
-                rowsAffected = command.ExecuteNonQuery();
+                //we dont update the createddate for the driver.
+
+                using (SqlCommand command = new SqlCommand("SP_UpdateDriver", connection))
+                {
+
+                    command.Parameters.AddWithValue("@DriverID", DriverID);
+                    command.Parameters.AddWithValue("@PersonID", PersonID);
+                    command.Parameters.AddWithValue("@CreatedByUserID", CreatedByUserID);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    try
+                    {
+                        connection.Open();
+                        rowsAffected = command.ExecuteNonQuery();
+
+                    }
+                    catch (Exception ex)
+                    {
+                        //Console.WriteLine("Error: " + ex.Message);
+                        ExceptionEventLog.RegiterErrorToLogRegitry(ex);
+                        return false;
+                    }
+                }
 
             }
-            catch (Exception ex)
-            {
-                //Console.WriteLine("Error: " + ex.Message);
-                ExceptionEventLog.RegiterErrorToLogRegitry(ex);
-                return false;
-            }
 
-            finally
-            {
-                connection.Close();
-            }
 
-            return (rowsAffected > 0);
+
+
+                return (rowsAffected > 0);
         }
 
     }

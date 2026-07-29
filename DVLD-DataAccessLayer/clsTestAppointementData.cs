@@ -15,7 +15,7 @@ namespace DVLD_DataAccessLayer
 
 
         public static bool GetTestappointmentInfoByID(int TestappointmentID, ref int TestTypeID, ref int LocalDrivingLicenseApplicationID, ref DateTime AppointmentDate,
-            ref float PaidFees, ref int UserID, ref bool IsLocked, ref int RetakeTestAppointmentID)
+            ref decimal PaidFees, ref int UserID, ref bool IsLocked, ref int RetakeTestAppointmentID)
         {
 
             bool Isfound = true;
@@ -40,7 +40,7 @@ namespace DVLD_DataAccessLayer
                                 TestTypeID = (int)Reader["TestTypeID"];
                                 LocalDrivingLicenseApplicationID = (int)Reader["LocalDrivingLicenseApplicationID"];
                                 AppointmentDate = (DateTime)Reader["AppointmentDate"];
-                                PaidFees = (float)Reader["PaidFees"];
+                                PaidFees = (decimal)Reader["PaidFees"];
                                 UserID = (int)Reader["UserID"];
                                 IsLocked = (bool)Reader["IsLocked"];
                                 RetakeTestAppointmentID = Reader["RetakeTestApplicationID"] == null ? 0 : (int)Reader["RetakeTestApplicationID"];
@@ -73,7 +73,7 @@ namespace DVLD_DataAccessLayer
 
         }
         public static bool GetLastTestAppointment(int LocalDrivingLicenseApplicationID, int TestTypeID, ref int TestAppointmentID, ref DateTime AppointmentDate,
-            ref float PaidFees, ref int UserID, ref bool IsLocked, ref int RetakeTestAppointmentID)
+            ref decimal PaidFees, ref int UserID, ref bool IsLocked, ref int RetakeTestAppointmentID)
         {
 
             bool Isfound = true;
@@ -100,7 +100,7 @@ namespace DVLD_DataAccessLayer
                             {
                                 TestAppointmentID = (int)Reader["TestAppointmentID"];
                                 AppointmentDate = (DateTime)Reader["AppointmentDate"];
-                                PaidFees = (float)Reader["PaidFees"];
+                                PaidFees = (decimal)Reader["PaidFees"];
                                 UserID = (int)Reader["UserID"];
                                 IsLocked = (bool)Reader["IsLocked"];
                                 RetakeTestAppointmentID = Reader["RetakeTestApplicationID"] == null ? 0 : (int)Reader["RetakeTestApplicationID"];
@@ -219,7 +219,7 @@ namespace DVLD_DataAccessLayer
 
 
         public static int AddNewTestAppointment(int TestTypeID,  int LocalDrivingLicenseApplicationID,  DateTime AppointmentDate,
-             float PaidFees,  int UserID,  bool IsLocked,  int RetakeTestAppointmentID)
+             decimal PaidFees,  int UserID,  bool IsLocked,  int RetakeTestAppointmentID)
         {
 
             int TestAppointmentID = -1;
@@ -269,7 +269,7 @@ namespace DVLD_DataAccessLayer
 
 
         public static bool UpdateTestAppointment(int TestTypeID, int LocalDrivingLicenseApplicationID, DateTime AppointmentDate,
-             float PaidFees, int UserID, bool IsLocked, int RetakeTestAppointmentID)
+             decimal PaidFees, int UserID, bool IsLocked, int RetakeTestAppointmentID)
         {
             int EffectedRows = 0;
             using (SqlConnection Connection = new SqlConnection(DataAccessSettings.connectionString))

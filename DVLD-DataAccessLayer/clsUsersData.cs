@@ -160,13 +160,13 @@ namespace DVLD_DataAccessLayer
 
         }
 
-        public static bool FindUser(int UserID, ref int PersonID, ref string Username,ref string Password, ref bool IsActive)
+        public static bool FindUserByUserID(int UserID, ref int PersonID, ref string Username,ref string Password, ref bool IsActive)
         {
 
             bool isfound = true;
             using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
             {
-                using (SqlCommand command = new SqlCommand("FindUserByUserID", connection))
+                using (SqlCommand command = new SqlCommand("SP_FindUserByUserID", connection))
                 {
                     command.Parameters.AddWithValue("@Userid", UserID);
                     command.CommandType = CommandType.StoredProcedure;
@@ -206,8 +206,54 @@ namespace DVLD_DataAccessLayer
             }
             return isfound;
         }
+        public static bool FindUserByPersonID(int PersonID, ref int UserID, ref string Username,ref string Password, ref bool IsActive)
+        {
 
-        public static bool FindUser(string Username, ref int PersonID, ref int UserID, ref string Password, ref bool IsActive)
+            bool isfound = true;
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
+            {
+                using (SqlCommand command = new SqlCommand("SP_FindUserByPersonID", connection))
+                {
+                    command.Parameters.AddWithValue("@PersonID", PersonID);
+                    command.CommandType = CommandType.StoredProcedure;
+
+
+                    try
+                    {
+                        connection.Open();
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                UserID = (int)reader["UserID"];
+                                Username = (string)reader["Username"];
+                                Password = (string)reader["Password"];
+                                IsActive = (bool)reader["IsActive"];
+                            }
+                            else
+                            {
+                                isfound = false;
+                            }
+                        }
+
+                        
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        ExceptionEventLog.RegiterErrorToLogRegitry(ex);
+                        isfound = false;
+                    }
+                }
+
+                
+            }
+            return isfound;
+        }
+
+        public static bool FindUserByUsername(string Username, ref int PersonID, ref int UserID, ref string Password, ref bool IsActive)
         {
 
             bool isfound = true;

@@ -82,7 +82,7 @@ namespace DVLD_BusinessLayer
 
             this._UserID = UserID;
 
-            this.UserInfo = clsUsers.FindUser(UserID);
+            this.UserInfo = clsUsers.FindUserByUserID(UserID);
 
             this.Mode = enMode.Update;
         }

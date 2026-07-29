@@ -25,56 +25,55 @@ namespace DVLD_DataAccess
             {
                 bool isFound = false;
 
-                SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString);
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
+            {
 
-                string query = "SELECT * FROM Tests WHERE TestID = @TestID";
-
-                SqlCommand command = new SqlCommand(query, connection);
-
-                command.Parameters.AddWithValue("@TestID", TestID);
-
-                try
+                using (SqlCommand command = new SqlCommand("SP_GetTestInfoByID", connection))
                 {
-                    connection.Open();
-                    SqlDataReader reader = command.ExecuteReader();
+                    command.CommandType = CommandType.StoredProcedure;
 
-                    if (reader.Read())
+                    command.Parameters.AddWithValue("@TestID", TestID);
+
+                    try
                     {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
 
-                        // The record was found
-                        isFound = true;
+                            if (reader.Read())
+                            {
 
-                    TestAppointmentID = (int)reader["TestAppointmentID"];
-                    TestResult = (bool)reader["TestResult"];
-                    if (reader["Notes"] ==DBNull.Value)
-                   
-                        Notes = "";
-                    else
-                        Notes = (string)reader["Notes"];
+                                // The record was found
+                                isFound = true;
 
-                    CreatedByUserID = (int)reader["CreatedByUserID"];
+                                TestAppointmentID = (int)reader["TestAppointmentID"];
+                                TestResult = (bool)reader["TestResult"];
+                                if (reader["Notes"] == DBNull.Value)
 
-                }
-                    else
+                                    Notes = "";
+                                else
+                                    Notes = (string)reader["Notes"];
+
+                                CreatedByUserID = (int)reader["CreatedByUserID"];
+
+                            }
+                            else
+                            {
+                                // The record was not found
+                                isFound = false;
+                            }
+                        }
+                    }
+                    catch (Exception ex)
                     {
-                        // The record was not found
+                        //Console.WriteLine("Error: " + ex.Message);
+                        ExceptionEventLog.RegiterErrorToLogRegitry(ex);
                         isFound = false;
                     }
-
-                    reader.Close();
-
-
                 }
-                catch (Exception ex)
-                {
-                    //Console.WriteLine("Error: " + ex.Message);
-                    ExceptionEventLog.RegiterErrorToLogRegitry(ex);
-                    isFound = false;
-                }
-                finally
-                {
-                    connection.Close();
-                }
+
+            }
+
 
                 return isFound;
             }
@@ -87,70 +86,65 @@ namespace DVLD_DataAccess
         {
             bool isFound = false;
 
-            SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString);
-
-            string query = @"SELECT  top 1 Tests.TestID, 
-                Tests.TestAppointmentID, Tests.TestResult, 
-			    Tests.Notes, Tests.CreatedByUserID, Applications.ApplicantPersonID
-                FROM            LocalDrivingLicenseApplications INNER JOIN
-                                         Tests INNER JOIN
-                                         TestAppointments ON Tests.TestAppointmentID = TestAppointments.TestAppointmentID ON LocalDrivingLicenseApplications.LocalDrivingLicenseApplicationID = TestAppointments.LocalDrivingLicenseApplicationID INNER JOIN
-                                         Applications ON LocalDrivingLicenseApplications.ApplicationID = Applications.ApplicationID
-                WHERE        (Applications.ApplicantPersonID = @PersonID) 
-                        AND (LocalDrivingLicenseApplications.LicenseClassID = @LicenseClassID)
-                        AND ( TestAppointments.TestTypeID=@TestTypeID)
-                ORDER BY Tests.TestAppointmentID DESC";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
-            command.Parameters.AddWithValue("@PersonID", PersonID);
-            command.Parameters.AddWithValue("@LicenseClassID", LicenseClassID);
-            command.Parameters.AddWithValue("@TestTypeID", TestTypeID);
-
-            try
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
             {
-                connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
 
-                if (reader.Read())
+                using (SqlCommand command = new SqlCommand("SP_GetLastTestByPersonAndTestTypeAndLicenseClass", connection))
                 {
+                    command.CommandType = CommandType.StoredProcedure;
 
-                    // The record was found
-                    isFound = true;
-                    TestID = (int)reader["TestID"];
-                    TestAppointmentID = (int)reader["TestAppointmentID"];
-                    TestResult = (bool)reader["TestResult"];
-                    if (reader["Notes"] == DBNull.Value)
+                    command.Parameters.AddWithValue("@PersonID", PersonID);
+                    command.Parameters.AddWithValue("@LicenseClassID", LicenseClassID);
+                    command.Parameters.AddWithValue("@TestTypeID", TestTypeID);
 
-                        Notes = "";
-                    else
-                        Notes = (string)reader["Notes"];
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
 
-                    CreatedByUserID = (int)reader["CreatedByUserID"];
+                            if (reader.Read())
+                            {
 
+                                // The record was found
+                                isFound = true;
+                                TestID = (int)reader["TestID"];
+                                TestAppointmentID = (int)reader["TestAppointmentID"];
+                                TestResult = (bool)reader["TestResult"];
+                                if (reader["Notes"] == DBNull.Value)
+
+                                    Notes = "";
+                                else
+                                    Notes = (string)reader["Notes"];
+
+                                CreatedByUserID = (int)reader["CreatedByUserID"];
+
+                            }
+                            else
+                            {
+                                // The record was not found
+                                isFound = false;
+                            }
+
+                        }
+
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        //Console.WriteLine("Error: " + ex.Message);
+                        ExceptionEventLog.RegiterErrorToLogRegitry(ex);
+                        isFound = false;
+                    }
                 }
-                else
-                {
-                    // The record was not found
-                    isFound = false;
-                }
 
-                reader.Close();
-
-
-            }
-            catch (Exception ex)
-            {
-                //Console.WriteLine("Error: " + ex.Message);
-                ExceptionEventLog.RegiterErrorToLogRegitry(ex);
-                isFound = false;
-            }
-            finally
-            {
-                connection.Close();
+                
             }
 
-            return isFound;
+
+
+                return isFound;
         }
 
 
@@ -158,40 +152,42 @@ namespace DVLD_DataAccess
             {
 
                 DataTable dt = new DataTable();
-                SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString);
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
+            {
 
-                string query = "SELECT * FROM Tests order by TestID";
-
-                SqlCommand command = new SqlCommand(query, connection);
-
-                try
+                using (SqlCommand command = new SqlCommand("SP_GetAllTests", connection))
                 {
-                    connection.Open();
+                    command.CommandType = CommandType.StoredProcedure;
 
-                    SqlDataReader reader = command.ExecuteReader();
-
-                    if (reader.HasRows)
-
+                    try
                     {
-                        dt.Load(reader);
+                        connection.Open();
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+
+                            if (reader.HasRows)
+
+                            {
+                                dt.Load(reader);
+                            }
+                        }
+
+
                     }
 
-                    reader.Close();
-
-
+                    catch (Exception ex)
+                    {
+                        // Console.WriteLine("Error: " + ex.Message);
+                        ExceptionEventLog.RegiterErrorToLogRegitry(ex);
+                    }
                 }
+                
 
-                catch (Exception ex)
-                {
-                    // Console.WriteLine("Error: " + ex.Message);
-                    ExceptionEventLog.RegiterErrorToLogRegitry(ex);
-                }
-                finally
-                {
-                    connection.Close();
-                }
+            }
 
-                return dt;
+
+            return dt;
 
             }
 
@@ -200,58 +196,53 @@ namespace DVLD_DataAccess
         {
             int TestID = -1;
 
-            SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString);
-
-            string query = @"Insert Into Tests (TestAppointmentID,TestResult,
-                                                Notes,   CreatedByUserID)
-                            Values (@TestAppointmentID,@TestResult,
-                                                @Notes,   @CreatedByUserID);
-                            
-                                UPDATE TestAppointments 
-                                SET IsLocked=1 where TestAppointmentID = @TestAppointmentID;
-
-                                SELECT SCOPE_IDENTITY();";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
-            command.Parameters.AddWithValue("@TestAppointmentID", TestAppointmentID);
-            command.Parameters.AddWithValue("@TestResult", TestResult);
-
-            if (Notes != "" && Notes != null)
-                command.Parameters.AddWithValue("@Notes", Notes);
-            else
-                command.Parameters.AddWithValue("@Notes", System.DBNull.Value);
-
-      
-            
-            command.Parameters.AddWithValue("@CreatedByUserID", CreatedByUserID);
-
-            try
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
             {
-                connection.Open();
 
-                object result = command.ExecuteScalar();
-
-                if (result != null && int.TryParse(result.ToString(), out int insertedID))
+                using (SqlCommand command = new SqlCommand("SP_AddNewTest", connection))
                 {
-                    TestID = insertedID;
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@TestAppointmentID", TestAppointmentID);
+                    command.Parameters.AddWithValue("@TestResult", TestResult);
+
+                    if (Notes != "" && Notes != null)
+                        command.Parameters.AddWithValue("@Notes", Notes);
+                    else
+                        command.Parameters.AddWithValue("@Notes", System.DBNull.Value);
+
+                    command.Parameters.AddWithValue("@CreatedByUserID", CreatedByUserID);
+
+                    var outParam = new SqlParameter("@TestID", SqlDbType.Int)
+                    {
+                        Direction = ParameterDirection.Output
+                    };
+
+                    try
+                    {
+                        connection.Open();
+
+                        object result = command.ExecuteScalar();
+
+                        if (result != null && int.TryParse(result.ToString(), out int insertedID))
+                        {
+                            TestID = insertedID;
+                        }
+                    }
+
+                    catch (Exception ex)
+                    {
+                        //Console.WriteLine("Error: " + ex.Message);
+                        ExceptionEventLog.RegiterErrorToLogRegitry(ex);
+
+                    }
                 }
-            }
-
-            catch (Exception ex)
-            {
-                //Console.WriteLine("Error: " + ex.Message);
-                ExceptionEventLog.RegiterErrorToLogRegitry(ex);
-
-            }
-
-            finally
-            {
-                connection.Close();
+               
             }
 
 
-            return TestID;
+
+                return TestID;
 
         }
 
@@ -260,85 +251,77 @@ namespace DVLD_DataAccess
         {
 
             int rowsAffected = 0;
-            SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString);
-
-            string query = @"Update  Tests  
-                            set TestAppointmentID = @TestAppointmentID,
-                                TestResult=@TestResult,
-                                Notes = @Notes,
-                                CreatedByUserID=@CreatedByUserID
-                                where TestID = @TestID";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
-            command.Parameters.AddWithValue("@TestID", TestID);
-            command.Parameters.AddWithValue("@TestAppointmentID", TestAppointmentID);
-            command.Parameters.AddWithValue("@TestResult", TestResult);
-            command.Parameters.AddWithValue("@Notes", Notes);
-            command.Parameters.AddWithValue("@CreatedByUserID", CreatedByUserID);
-
-            try
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
             {
-                connection.Open();
-                rowsAffected = command.ExecuteNonQuery();
 
-            }
-            catch (Exception ex)
-            {
-                //Console.WriteLine("Error: " + ex.Message);
-                ExceptionEventLog.RegiterErrorToLogRegitry(ex);
-                return false;
-            }
+                using (SqlCommand command = new SqlCommand("SP_UpdateTest", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
 
-            finally
-            {
-                connection.Close();
+                    command.Parameters.AddWithValue("@TestID", TestID);
+                    command.Parameters.AddWithValue("@TestAppointmentID", TestAppointmentID);
+                    command.Parameters.AddWithValue("@TestResult", TestResult);
+                    command.Parameters.AddWithValue("@Notes", Notes);
+                    command.Parameters.AddWithValue("@CreatedByUserID", CreatedByUserID);
+
+                    try
+                    {
+                        connection.Open();
+                        rowsAffected = command.ExecuteNonQuery();
+
+                    }
+                    catch (Exception ex)
+                    {
+                        //Console.WriteLine("Error: " + ex.Message);
+                        ExceptionEventLog.RegiterErrorToLogRegitry(ex);
+                        return false;
+                    }
+                }
+                
             }
 
-            return (rowsAffected > 0);
+
+                return (rowsAffected > 0);
         }
 
         public static byte GetPassedTestCount(int LocalDrivingLicenseApplicationID)
         {
             byte PassedTestCount = 0;
 
-            SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString);
-
-            string query = @"SELECT PassedTestCount = count(TestTypeID)
-                         FROM Tests INNER JOIN
-                         TestAppointments ON Tests.TestAppointmentID = TestAppointments.TestAppointmentID
-						 where LocalDrivingLicenseApplicationID =@LocalDrivingLicenseApplicationID and TestResult=1";
-
-            SqlCommand command = new SqlCommand(query, connection);
-
-            command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
-
-
-            try
+            using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
             {
-                connection.Open();
 
-                object result = command.ExecuteScalar();
-
-                if (result != null && byte.TryParse(result.ToString(), out byte ptCount))
+                using (SqlCommand command = new SqlCommand("SP_GetPassedTestCount", connection))
                 {
-                    PassedTestCount = ptCount;
+
+                    command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
+
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    try
+                    {
+                        connection.Open();
+
+                        object result = command.ExecuteScalar();
+
+                        if (result != null && byte.TryParse(result.ToString(), out byte ptCount))
+                        {
+                            PassedTestCount = ptCount;
+                        }
+                    }
+
+                    catch (Exception ex)
+                    {
+                        //Console.WriteLine("Error: " + ex.Message);
+                        ExceptionEventLog.RegiterErrorToLogRegitry(ex);
+
+                    }
                 }
-            }
-
-            catch (Exception ex)
-            {
-                //Console.WriteLine("Error: " + ex.Message);
-                ExceptionEventLog.RegiterErrorToLogRegitry(ex);
 
             }
 
-            finally
-            {
-                connection.Close();
-            }
 
-            return PassedTestCount;
+                return PassedTestCount;
 
 
 

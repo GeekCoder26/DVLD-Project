@@ -21,7 +21,7 @@ namespace DVLD_BusinessLayer
         public clsTestTypes.enType _TestTypeID { get; set; }
         public int _LocalDrivingLicenseApplicationID { get; set; }
         public DateTime _AppointmentDate { get; set; }
-        public float _PaidFees { get; set; }
+        public decimal _PaidFees { get; set; }
         public int _UserID { get; set; }
         public bool _IsLocked { get; set; }
         public int _RetakeTestAppID { get; set; }
@@ -45,7 +45,7 @@ namespace DVLD_BusinessLayer
         }
 
         private clsTestAppointment(int TestAppointmentID, clsTestTypes.enType TestTypeID, int LocalDrivingLicenseApplicationID, DateTime AppointmentDate,
-            float PaidFees, int UserID, bool IsLocked, int RetakeTestAppID)
+            decimal PaidFees, int UserID, bool IsLocked, int RetakeTestAppID)
         {
             this._TestAppointmentID = TestAppointmentID;
             this._TestTypeID = TestTypeID;
@@ -78,7 +78,7 @@ namespace DVLD_BusinessLayer
         {
             int TestTypeID = -1, LocalDrivingLicenseApplicationID = -1;
             DateTime AppointmentDate = DateTime.Now;
-            float PaidFee = 0;
+            decimal PaidFee = 0;
             int UserID = -1;
             bool IsLocked = false;
             int RetakeTestAppID = -1;
@@ -101,7 +101,7 @@ namespace DVLD_BusinessLayer
         {
             int TestAppointmentID = -1;
             DateTime AppointmentDate = DateTime.Now;
-            float PaidFee = 0;
+            decimal PaidFee = 0;
             int UserID = -1;
             bool IsLocked = false;
             int RetakeTestAppID = -1;

@@ -72,15 +72,30 @@ namespace DVLD_BusinessLayer
         }
 
 
-        public static clsUsers FindUser(int UserID)
+        public static clsUsers FindUserByUserID(int UserID)
         {
             string Username = "", Password = "";
             bool isActive = false;
             int PersonID = -1;
 
-            if(clsUsersData.FindUser(UserID, ref PersonID, ref Username, ref Password, ref isActive))
+            if(clsUsersData.FindUserByUserID(UserID, ref PersonID, ref Username, ref Password, ref isActive))
             {
                 return new clsUsers(UserID, PersonID,  Username, Password, isActive);
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public static clsUsers FindUserByPersonID(int PersonID)
+        {
+            string Username = "", Password = "";
+            bool isActive = false;
+            int UserID = -1;
+
+            if(clsUsersData.FindUserByPersonID(PersonID, ref UserID, ref Username, ref Password, ref isActive))
+            {
+                return new clsUsers(PersonID, UserID,  Username, Password, isActive);
             }
             else
             {
@@ -94,7 +109,7 @@ namespace DVLD_BusinessLayer
             bool isActive = false;
             int PersonID = -1;
 
-            if (clsUsersData.FindUser(Username, ref PersonID, ref UserID, ref Password, ref isActive))
+            if (clsUsersData.FindUserByUsername(Username, ref PersonID, ref UserID, ref Password, ref isActive))
             {
                 return new clsUsers(UserID, PersonID, Username, Password, isActive);
             }

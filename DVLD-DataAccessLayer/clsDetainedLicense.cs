@@ -18,7 +18,7 @@ namespace DVLD_DataAccess
 
         public static bool GetDetainedLicenseInfoByID(int DetainID, 
             ref int LicenseID, ref DateTime DetainDate,
-            ref float FineFees,ref int CreatedByUserID, 
+            ref decimal FineFees,ref int CreatedByUserID, 
             ref bool IsReleased, ref DateTime ReleaseDate, 
             ref int ReleasedByUserID,ref int ReleaseApplicationID)
             {
@@ -48,7 +48,7 @@ namespace DVLD_DataAccess
 
                                 LicenseID = (int)reader["LicenseID"];
                                 DetainDate = (DateTime)reader["DetainDate"];
-                                FineFees = Convert.ToSingle(reader["FineFees"]);
+                                FineFees = Convert.ToDecimal(reader["FineFees"]);
                                 CreatedByUserID = (int)reader["CreatedByUserID"];
 
                                 IsReleased = (bool)reader["IsReleased"];
@@ -89,7 +89,7 @@ namespace DVLD_DataAccess
         
         public static bool GetDetainedLicenseInfoByLicenseID(int LicenseID,
          ref int DetainID, ref DateTime DetainDate,
-         ref float FineFees, ref int CreatedByUserID,
+         ref decimal FineFees, ref int CreatedByUserID,
          ref bool IsReleased, ref DateTime ReleaseDate,
          ref int ReleasedByUserID, ref int ReleaseApplicationID)
         {
@@ -119,7 +119,7 @@ namespace DVLD_DataAccess
 
                                 LicenseID = (int)reader["LicenseID"];
                                 DetainDate = (DateTime)reader["DetainDate"];
-                                FineFees = Convert.ToSingle(reader["FineFees"]);
+                                FineFees = Convert.ToDecimal(reader["FineFees"]);
                                 CreatedByUserID = (int)reader["CreatedByUserID"];
 
                                 IsReleased = (bool)reader["IsReleased"];
@@ -207,7 +207,7 @@ namespace DVLD_DataAccess
 
         public static int AddNewDetainedLicense(
             int LicenseID,  DateTime DetainDate,
-            float FineFees,  int CreatedByUserID)
+            decimal FineFees,  int CreatedByUserID)
         {
             int DetainID = -1;
 
@@ -255,7 +255,7 @@ namespace DVLD_DataAccess
 
         public static bool UpdateDetainedLicense(int DetainID, 
             int LicenseID, DateTime DetainDate,
-            float FineFees, int CreatedByUserID)
+            decimal FineFees, int CreatedByUserID)
         {
 
             int rowsAffected = 0;
