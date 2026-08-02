@@ -132,6 +132,10 @@ namespace DVLD_BusinessLayer
         {
             return clsApplicationsData.DeleteApplication(ApplicationID);
         }
+        public bool Delete()
+        {
+            return clsApplicationsData.DeleteApplication(this._ApplicationID);
+        }
 
         public static clsApplication FindApplication(int ApplicationID)
         {

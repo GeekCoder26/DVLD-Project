@@ -92,10 +92,10 @@
     <Compile Include="Application\Controls\ctrlApplicationBaseInfo.Designer.cs">
       <DependentUpon>ctrlApplicationBaseInfo.cs</DependentUpon>
     </Compile>
-    <Compile Include="Application\Local Driving License\ctrlLocalDrivingLicenseApplication.cs">
+    <Compile Include="Application\Controls\ctrlLocalDrivingLicenseApplication.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Application\Local Driving License\ctrlLocalDrivingLicenseApplication.Designer.cs">
+    <Compile Include="Application\Controls\ctrlLocalDrivingLicenseApplication.Designer.cs">
       <DependentUpon>ctrlLocalDrivingLicenseApplication.cs</DependentUpon>
     </Compile>
     <Compile Include="Application\Local Driving License\frmAddNewLocalLicenseApp.cs">
@@ -103,6 +103,12 @@
     </Compile>
     <Compile Include="Application\Local Driving License\frmAddNewLocalLicenseApp.Designer.cs">
       <DependentUpon>frmAddNewLocalLicenseApp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Application\Local Driving License\frmListLocalDrivingLicense.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Application\Local Driving License\frmListLocalDrivingLicense.Designer.cs">
+      <DependentUpon>frmListLocalDrivingLicense.cs</DependentUpon>
     </Compile>
     <Compile Include="Application\Local Driving License\frmLocalDrivingLicenseApplication.cs">
       <SubType>Form</SubType>
@@ -244,11 +250,14 @@
     <EmbeddedResource Include="Application\Controls\ctrlApplicationBaseInfo.resx">
       <DependentUpon>ctrlApplicationBaseInfo.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Application\Local Driving License\ctrlLocalDrivingLicenseApplication.resx">
+    <EmbeddedResource Include="Application\Controls\ctrlLocalDrivingLicenseApplication.resx">
       <DependentUpon>ctrlLocalDrivingLicenseApplication.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Application\Local Driving License\frmAddNewLocalLicenseApp.resx">
       <DependentUpon>frmAddNewLocalLicenseApp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Application\Local Driving License\frmListLocalDrivingLicense.resx">
+      <DependentUpon>frmListLocalDrivingLicense.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Application\Local Driving License\frmLocalDrivingLicenseApplication.resx">
       <DependentUpon>frmLocalDrivingLicenseApplication.cs</DependentUpon>
@@ -565,6 +574,72 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AddAppointment 32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Application Types 5121.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\New Application 64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\New Application 641.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Delete 32 2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Schedule Test 32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\IssueDrivingLicense 32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\License View 321.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PersonLicenseHistory 32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Applications.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Manage Applications 64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Driver License 481.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LocalDriving License.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Detain 64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Detain 32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Release Detained License 32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Damaged Driving License 32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Renew Driving License 321.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Detained Driving License 32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Retake Test 32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Vision Test 32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Written Test 32 Sechdule1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Street Test 32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

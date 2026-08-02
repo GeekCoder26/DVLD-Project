@@ -1,4 +1,5 @@
-﻿using DVLD_BusinessLayer;
+﻿using DVLD_Buisness;
+using DVLD_BusinessLayer;
 using DVLD_PresentationLayer.Global_Classes;
 using System;
 using System.Collections.Generic;
@@ -66,10 +67,20 @@ namespace DVLD_PresentationLayer.Application.Local_Driving_License
 
         }
 
+        public void FillLicensesInComboBox()
+        {
+            DataTable dtLicenseClasses = clsLicenseClass.GetAllLicenseClasses();
+
+            foreach(DataRow row in dtLicenseClasses.Rows)
+            {
+                cmbLicenseClass.Items.Add(row["ClassName"]);
+            }
+        }
         private void ResetDefaultValue()
         {
+            FillLicensesInComboBox();
 
-            if(Mode == enMode.AddNew)
+            if (Mode == enMode.AddNew)
             {
                
                 lblFormMode.Text = "New Local Driving License Application";
@@ -77,9 +88,10 @@ namespace DVLD_PresentationLayer.Application.Local_Driving_License
                 _LocalDrivingLicenseApplication = new ClsLocalDrivingLicenseApplication();
                 ctrlPersonDetailsWithFilter1.FilterFocus();
                 tpApplicationInfo.Enabled = false;
+                btnSave.Enabled = false;
                 cmbLicenseClass.SelectedIndex = 2;
                 lblApplicationFees.Text = clsApplicationTypes.FindApplicationType((int)clsApplication.enApplicationType.NewDrivingLicense)._ApplicationFees.ToString();
-                lblApplicationDate.Text = DateTime.Now.ToString();
+                lblApplicationDate.Text = DateTime.Now.ToShortDateString();
                 lblUserID.Text = clsGlobalSettings.User._UserID.ToString();
 
 
@@ -138,21 +150,17 @@ namespace DVLD_PresentationLayer.Application.Local_Driving_License
             if (ActiveApplicationID != -1)
             {
                 MessageBox.Show("Choose Another License Class, The Selected Person have already an active application for the selected class","Application Already Exist", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                cmbLicenseClass.Focus();
                 return;
             }
 
       
+            if (clsLicense.IsLicenseExistByPersonID(ctrlPersonDetailsWithFilter1.PersonID, LicenseClassID))
+            {
+                MessageBox.Show("Person Altready Have a License With The Same License Class", "License Already Exists", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                return;
+            }
 
-
-            /* Don't Forget To Add This Function
-             
-                if(clsLicense.IsLicenseExistByPersonID()
-                 {
-                    
-                    bla bla bla bla
-                 }
-             
-             */
 
             _LocalDrivingLicenseApplication._PersonID = ctrlPersonDetailsWithFilter1.PersonID;
             _LocalDrivingLicenseApplication._ApplicationDate = DateTime.Now;
@@ -192,7 +200,7 @@ namespace DVLD_PresentationLayer.Application.Local_Driving_License
 
         private void frmAddNewLocalLicenseApp_Activated(object sender, EventArgs e)
         {
-            //ctrlPersonDetailsWithFilter1.FilterFocus();
+            ctrlPersonDetailsWithFilter1.FilterFocus();
         }
     }
 }

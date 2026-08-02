@@ -108,5 +108,59 @@ namespace DVLD_PresentationLayer
             Form frm = new frmAddNewLocalLicenseApp();
             frm.ShowDialog();
         }
+
+        private void manageLocalDrivingLicenseApplicationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmListLocalDrivingLicense form = new frmListLocalDrivingLicense();
+            form.ShowDialog();
+        }
+
+        private void renewDrivingLicenseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("This functionality is not ready", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+        }
+
+        private void replacemmToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("This functionality is not ready", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+        }
+
+        private void releaseDetainedDrivingLicenseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("This functionality is not ready", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+        }
+
+        private void retakeTestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("This functionality is not ready", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+        }
+
+        private void internationalLicenseApplicationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("This functionality is not ready", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+        }
+
+        private void manageDetainedLicensesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("This functionality is not ready", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+        }
+
+        private void detainLicensesToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("This functionality is not ready", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+        }
+
+        private void releaseDetainedLicenseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("This functionality is not ready", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+        }
     }
 }

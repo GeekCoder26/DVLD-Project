@@ -19,7 +19,7 @@ namespace DVLD_DataAccessLayer
 
                 using (SqlCommand command = new SqlCommand("SP_GetLocalDrivingLicesneInfoByID", connection))
                 {
-                    command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseID);
+                    command.Parameters.AddWithValue("@LocalDrivingLicenseID", LocalDrivingLicenseID);
 
                     command.CommandType = CommandType.StoredProcedure;
 
@@ -215,7 +215,7 @@ namespace DVLD_DataAccessLayer
 
         }
 
-        public static bool DeleteApplication(int LocalDrivingLicenseApplicationID)
+        public static bool DeleteLocalApplication(int LocalDrivingLicenseApplicationID)
         {
             using (SqlConnection connection = new SqlConnection(DataAccessSettings.connectionString))
             {
