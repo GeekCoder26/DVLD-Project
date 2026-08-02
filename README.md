@@ -2,11 +2,6 @@
 
 A comprehensive Windows-based desktop application designed to automate the workflows and operations of a driving license department[cite: 1]. The system handles the complete lifecycle of driving licenses, core applications, multi-stage examination scheduling, and database-driven system administration[cite: 1].
 
-> **Project Status:** 🚧 *Under Development / Code Refactoring*
-> I am currently refactoring the core codebase to optimize database queries, implement advanced T-SQL practices, and apply advanced data structures for enhanced in-memory data processing.
-
----
-
 ## 🏗️ Architecture & Design
 
 The application is built using a strict **3-Tier Architecture** pattern to ensure clean separation of concerns, maintainability, and scalability:
