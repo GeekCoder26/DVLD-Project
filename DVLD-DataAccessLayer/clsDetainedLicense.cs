@@ -119,6 +119,7 @@ namespace DVLD_DataAccess
                                 isFound = true;
 
                                 LicenseID = (int)reader["LicenseID"];
+                                DetainID = (int)reader["DetainID"];
                                 DetainDate = (DateTime)reader["DetainDate"];
                                 FineFees = Convert.ToDecimal(reader["FineFees"]);
                                 CreatedByUserID = (int)reader["CreatedByUserID"];
@@ -312,11 +313,11 @@ namespace DVLD_DataAccess
             {
                 using (SqlCommand command = new SqlCommand("SP_ReleaseDetainLicense", connection))
                 {
-
-                    command.Parameters.AddWithValue("@DetainID", DetainID);
-                    command.Parameters.AddWithValue("@ReleasedByUserID", ReleasedByUserID);
-                    command.Parameters.AddWithValue("@ReleaseApplicationID", ReleaseApplicationID);
+                    command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@ReleaseDate", DateTime.Now);
+                    command.Parameters.AddWithValue("@ReleaseByUserID", ReleasedByUserID);
+                    command.Parameters.AddWithValue("@ReleaseApplicationID", ReleaseApplicationID);
+                    command.Parameters.AddWithValue("@DetainID", DetainID);
                     try
                     {
                         connection.Open();
@@ -345,7 +346,7 @@ namespace DVLD_DataAccess
 
                 using (SqlCommand command = new SqlCommand("SP_IsLicenseDetained", connection))
                 {
-
+                    command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@LicenseID", LicenseID);
 
                     try

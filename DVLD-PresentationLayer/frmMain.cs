@@ -1,7 +1,12 @@
 ﻿using DVLD_BusinessLayer;
 using DVLD_PresentationLayer.Application.Local_Driving_License;
+using DVLD_PresentationLayer.Application.Release_Detained_License;
+using DVLD_PresentationLayer.Application.Renew_Driving_License;
+using DVLD_PresentationLayer.Application.Replace_Lost_Or_Damage_License;
 using DVLD_PresentationLayer.ApplicationTypes;
+using DVLD_PresentationLayer.Drivers;
 using DVLD_PresentationLayer.Global_Classes;
+using DVLD_PresentationLayer.Licenses.Detain_Licenses;
 using DVLD_PresentationLayer.Login;
 using DVLD_PresentationLayer.Tests.Manage_Test_Types;
 using DVLD_PresentationLayer.Users;
@@ -117,13 +122,14 @@ namespace DVLD_PresentationLayer
 
         private void renewDrivingLicenseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("This functionality is not ready", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+            frmRenewDrivingLicense form = new frmRenewDrivingLicense();
+            form.ShowDialog();
         }
 
         private void replacemmToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("This functionality is not ready", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            frmReplaceLostOrDamageLicense form = new frmReplaceLostOrDamageLicense();
+            form.ShowDialog();
 
         }
 
@@ -135,8 +141,8 @@ namespace DVLD_PresentationLayer
 
         private void retakeTestToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("This functionality is not ready", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+            frmListLocalDrivingLicense form = new frmListLocalDrivingLicense();
+            form.ShowDialog();
         }
 
         private void internationalLicenseApplicationToolStripMenuItem_Click(object sender, EventArgs e)
@@ -147,20 +153,34 @@ namespace DVLD_PresentationLayer
 
         private void manageDetainedLicensesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("This functionality is not ready", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            frmListDetainedLicenses form = new frmListDetainedLicenses();
+            form.ShowDialog();
 
         }
 
         private void detainLicensesToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("This functionality is not ready", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            frmDetainLicenses form = new frmDetainLicenses();
+            form.ShowDialog();
 
         }
 
         private void releaseDetainedLicenseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("This functionality is not ready", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            frmReleaseDetainedLicense form = new frmReleaseDetainedLicense();
+            form.ShowDialog();
 
+        }
+
+        private void driversToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmListDrivers form = new frmListDrivers();
+            form.ShowDialog();
+        }
+
+        private void internationalLicenseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("This functionality is not ready", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

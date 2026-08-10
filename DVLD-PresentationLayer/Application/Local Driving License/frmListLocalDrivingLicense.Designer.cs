@@ -211,7 +211,6 @@
             this.cmsScheduleTest.Name = "cmsScheduleTest";
             this.cmsScheduleTest.Size = new System.Drawing.Size(318, 48);
             this.cmsScheduleTest.Text = "Schedule Test";
-            this.cmsScheduleTest.Click += new System.EventHandler(this.cmsScheduleTest_Click);
             // 
             // cmsVisionTest
             // 
@@ -220,6 +219,7 @@
             this.cmsVisionTest.Name = "cmsVisionTest";
             this.cmsVisionTest.Size = new System.Drawing.Size(236, 38);
             this.cmsVisionTest.Text = "VisionTest";
+            this.cmsVisionTest.Click += new System.EventHandler(this.cmsVisionTest_Click);
             // 
             // cmsWrittenTest
             // 
@@ -228,6 +228,7 @@
             this.cmsWrittenTest.Name = "cmsWrittenTest";
             this.cmsWrittenTest.Size = new System.Drawing.Size(236, 38);
             this.cmsWrittenTest.Text = "Written Test";
+            this.cmsWrittenTest.Click += new System.EventHandler(this.cmsWrittenTest_Click);
             // 
             // cmsStreetTest
             // 
@@ -236,6 +237,7 @@
             this.cmsStreetTest.Name = "cmsStreetTest";
             this.cmsStreetTest.Size = new System.Drawing.Size(236, 38);
             this.cmsStreetTest.Text = "Street Test";
+            this.cmsStreetTest.Click += new System.EventHandler(this.cmsStreetTest_Click);
             // 
             // toolStripSeparator4
             // 

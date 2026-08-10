@@ -70,7 +70,7 @@ namespace DVLD_BusinessLayer
 
         private bool _UpdateTestAppointment()
         {
-            return clsTestAppointementData.UpdateTestAppointment((int)this._TestTypeID, this._LocalDrivingLicenseApplicationID, this._AppointmentDate
+            return clsTestAppointementData.UpdateTestAppointment(this._TestAppointmentID,(int)this._TestTypeID, this._LocalDrivingLicenseApplicationID, this._AppointmentDate
                 , this._PaidFees, this._UserID, this._IsLocked, this._RetakeTestAppID);
         }
 

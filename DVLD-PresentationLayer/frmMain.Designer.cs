@@ -48,6 +48,7 @@
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.manageTestTypesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.peopleMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.driversToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.usersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.accountDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -69,6 +70,7 @@
             this.msItems.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.applicationTypesToolStripMenuItem,
             this.peopleMenu,
+            this.driversToolStripMenuItem,
             this.usersToolStripMenuItem,
             this.accountDetailsToolStripMenuItem});
             this.msItems.Location = new System.Drawing.Point(0, 0);
@@ -135,6 +137,7 @@
             this.internationalLicenseToolStripMenuItem.Name = "internationalLicenseToolStripMenuItem";
             this.internationalLicenseToolStripMenuItem.Size = new System.Drawing.Size(308, 38);
             this.internationalLicenseToolStripMenuItem.Text = "International License";
+            this.internationalLicenseToolStripMenuItem.Click += new System.EventHandler(this.internationalLicenseToolStripMenuItem_Click);
             // 
             // renewDrivingLicenseToolStripMenuItem
             // 
@@ -269,6 +272,16 @@
             this.peopleMenu.Size = new System.Drawing.Size(153, 68);
             this.peopleMenu.Text = "People";
             this.peopleMenu.Click += new System.EventHandler(this.peopleMenu_Click);
+            // 
+            // driversToolStripMenuItem
+            // 
+            this.driversToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.driversToolStripMenuItem.Image = global::DVLD_PresentationLayer.Properties.Resources.Drivers_64;
+            this.driversToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.driversToolStripMenuItem.Name = "driversToolStripMenuItem";
+            this.driversToolStripMenuItem.Size = new System.Drawing.Size(158, 68);
+            this.driversToolStripMenuItem.Text = "Drivers";
+            this.driversToolStripMenuItem.Click += new System.EventHandler(this.driversToolStripMenuItem_Click);
             // 
             // usersToolStripMenuItem
             // 
@@ -443,5 +456,6 @@
         private System.Windows.Forms.ToolStripMenuItem manageDetainedLicensesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem detainLicensesToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem releaseDetainedLicenseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem driversToolStripMenuItem;
     }
 }

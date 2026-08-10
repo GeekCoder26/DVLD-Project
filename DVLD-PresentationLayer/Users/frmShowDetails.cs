@@ -17,7 +17,7 @@ namespace DVLD_PresentationLayer.Users
         {
             InitializeComponent();
            
-            ctrlUserCard1.LoadUserInfo(UserID, PersonID);
+            ctrlUserCard1.LoadUserInfo(PersonID);
         }
         public frmShowDetails(string Username)
         {

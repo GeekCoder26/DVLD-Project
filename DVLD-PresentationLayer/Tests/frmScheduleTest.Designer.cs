@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.ctrlScheduleTest1 = new DVLD_PresentationLayer.Tests.Controls.ctrlScheduleTest();
-            this.btnSave = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ctrlScheduleTest1
@@ -38,26 +38,26 @@
             this.ctrlScheduleTest1.Name = "ctrlScheduleTest1";
             this.ctrlScheduleTest1.Size = new System.Drawing.Size(496, 646);
             this.ctrlScheduleTest1.TabIndex = 0;
-            this.ctrlScheduleTest1.TestTypeID = DVLD_BusinessLayer.clsTestTypes.enType.VisionTest;
+            this.ctrlScheduleTest1.TestTypeID = DVLD_BusinessLayer.clsTestTypes.enType.PracticalTest;
             // 
-            // btnSave
+            // btnClose
             // 
-            this.btnSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSave.Image = global::DVLD_PresentationLayer.Properties.Resources.Close_32;
-            this.btnSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSave.Location = new System.Drawing.Point(190, 664);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(103, 40);
-            this.btnSave.TabIndex = 114;
-            this.btnSave.Text = "   Close";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            this.btnClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClose.Image = global::DVLD_PresentationLayer.Properties.Resources.Close_32;
+            this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnClose.Location = new System.Drawing.Point(190, 664);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(103, 40);
+            this.btnClose.TabIndex = 114;
+            this.btnClose.Text = "   Close";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // frmScheduleTest
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(520, 716);
-            this.Controls.Add(this.btnSave);
+            this.Controls.Add(this.btnClose);
             this.Controls.Add(this.ctrlScheduleTest1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "frmScheduleTest";
@@ -70,6 +70,6 @@
         #endregion
 
         private Controls.ctrlScheduleTest ctrlScheduleTest1;
-        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Button btnClose;
     }
 }

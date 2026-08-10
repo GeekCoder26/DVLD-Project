@@ -34,16 +34,16 @@
             // 
             // button1
             // 
-            this.button1.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.button1.BackColor = System.Drawing.Color.White;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.Image = global::DVLD_PresentationLayer.Properties.Resources.Close_32;
             this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.Location = new System.Drawing.Point(825, 470);
+            this.button1.Location = new System.Drawing.Point(825, 476);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(137, 43);
+            this.button1.Size = new System.Drawing.Size(137, 37);
             this.button1.TabIndex = 1;
-            this.button1.Text = "Close";
+            this.button1.Text = "  Close";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -57,6 +57,7 @@
             // frmShowDetails
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(974, 525);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.ctrlUserCard1);

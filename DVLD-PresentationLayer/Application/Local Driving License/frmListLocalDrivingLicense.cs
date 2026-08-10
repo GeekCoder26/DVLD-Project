@@ -1,4 +1,7 @@
 ﻿using DVLD_BusinessLayer;
+using DVLD_PresentationLayer.Licenses;
+using DVLD_PresentationLayer.Licenses.Local_Driving_License;
+using DVLD_PresentationLayer.Tests;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -262,28 +265,46 @@ namespace DVLD_PresentationLayer.Application.Local_Driving_License
 
         }
 
-        private void cmsScheduleTest_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("This functionality is not ready", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-        }
-
         private void cmsIssueDrivingLicense_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("This functionality is not ready", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            frmIssueDrivingLicenseForTheFirstTime form = new frmIssueDrivingLicenseForTheFirstTime((int)dgvShowLDLA.CurrentRow.Cells[0].Value);
+            form.ShowDialog();
+
+            frmListLocalDrivingLicense_Load(null, null);
+
 
         }
 
         private void cmsShowLicense_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("This functionality is not ready", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            int LocalDrivingLicenseApplicationID = (int)dgvShowLDLA.CurrentRow.Cells[0].Value;
+
+            int LicenseID = ClsLocalDrivingLicenseApplication.FindByLocalDrivingApplication(
+               LocalDrivingLicenseApplicationID).GetActiveLicenseID();
+
+            if (LicenseID != -1)
+            {
+                frmShowLicense frm = new frmShowLicense(LicenseID);
+                frm.ShowDialog();
+
+            }
+            else
+            {
+                MessageBox.Show("No License Found!", "No License", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
 
         }
 
         private void cmsLicenseHistory_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("This functionality is not ready", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            int LocalDrivingLicenseApplicationID = (int)dgvShowLDLA.CurrentRow.Cells[0].Value;
 
+            ClsLocalDrivingLicenseApplication LocalDrivingApplication = ClsLocalDrivingLicenseApplication.FindByLocalDrivingApplication(LocalDrivingLicenseApplicationID);
+
+            frmShowPersonLicenseHistory form = new frmShowPersonLicenseHistory(LocalDrivingApplication._PersonID);
+            form.ShowDialog();
         }
 
         private void cmsApplications_Opening(object sender, CancelEventArgs e)
@@ -292,6 +313,7 @@ namespace DVLD_PresentationLayer.Application.Local_Driving_License
 
             ClsLocalDrivingLicenseApplication LocalDrivingApplication = ClsLocalDrivingLicenseApplication.FindByLocalDrivingApplication(LocalDrivingLicenseApplicationID);
 
+            
             if (LocalDrivingApplication == null)
             {
                 MessageBox.Show("Application Not Found", "Invalid Application", MessageBoxButtons.OK, MessageBoxIcon.Stop);
@@ -304,7 +326,7 @@ namespace DVLD_PresentationLayer.Application.Local_Driving_License
 
             bool isLicenseExists = LocalDrivingApplication.IsLicenseIssued();
 
-            cmsIssueDrivingLicense.Enabled = (TotalPassedTest == 3) && (isLicenseExists == false);
+            cmsIssueDrivingLicense.Enabled = (TotalPassedTest == 3) && (!isLicenseExists);
 
             cmsShowLicense.Enabled = isLicenseExists;
 
@@ -332,6 +354,33 @@ namespace DVLD_PresentationLayer.Application.Local_Driving_License
                 cmsStreetTest.Enabled = PassedVisionTest && PassedWrittenTest && !PassedStreetTest;
             }
 
+
+        }
+
+        private void _ScheduleTest(clsTestTypes.enType TestType)
+        {
+            int LocalDrivingLicenseID = (int)dgvShowLDLA.CurrentRow.Cells[0].Value;
+
+            frmListTetAppointments form = new frmListTetAppointments(LocalDrivingLicenseID, TestType);
+
+            form.ShowDialog();
+
+            frmListLocalDrivingLicense_Load(null, null);
+        }
+
+        private void cmsVisionTest_Click(object sender, EventArgs e)
+        {
+            _ScheduleTest(clsTestTypes.enType.VisionTest);
+        }
+
+        private void cmsWrittenTest_Click(object sender, EventArgs e)
+        {
+            _ScheduleTest(clsTestTypes.enType.WrittenTest);
+        }
+
+        private void cmsStreetTest_Click(object sender, EventArgs e)
+        {
+            _ScheduleTest(clsTestTypes.enType.PracticalTest);
 
         }
     }

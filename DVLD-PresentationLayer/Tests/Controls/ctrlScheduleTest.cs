@@ -178,7 +178,7 @@ namespace DVLD_PresentationLayer.Tests.Controls
 
             }
 
-            lblTotalFees.Text = Convert.ToDecimal(lblFees.Text) + Convert.ToDecimal(lblReakeAppFees).ToString();
+            lblTotalFees.Text = (Convert.ToDecimal(lblFees.Text) + Convert.ToDecimal(lblReakeAppFees.Text)).ToString();
 
             if (!_HandleActiveTestAppointmentConstraint())
                 return;

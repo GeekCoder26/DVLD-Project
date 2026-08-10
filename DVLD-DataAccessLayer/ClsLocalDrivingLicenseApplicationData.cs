@@ -262,7 +262,7 @@ namespace DVLD_DataAccessLayer
                 using (SqlCommand cmd = new SqlCommand("SP_DoesTestPassed", connection))
                 {
 
-                    cmd.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
+                    cmd.Parameters.AddWithValue("@LocalDrivingLicenseID", LocalDrivingLicenseApplicationID);
                     cmd.Parameters.AddWithValue("@TestTypeID", TestTypeID);
 
                     cmd.CommandType = CommandType.StoredProcedure;

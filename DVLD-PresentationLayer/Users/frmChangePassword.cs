@@ -146,7 +146,7 @@ namespace DVLD_PresentationLayer.Users
                 return;
             }
 
-            ctrlUserCard1.LoadUserInfo(_UserID, _PersonID);
+            ctrlUserCard1.LoadUserInfo(_PersonID);
         }
     }
 }

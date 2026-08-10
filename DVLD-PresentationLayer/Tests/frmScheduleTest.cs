@@ -36,7 +36,8 @@ namespace DVLD_PresentationLayer.Tests
             ctrlScheduleTest1.LoadInfo(_LocalDrivingLicenseApplicationID,  _AppointmentID);
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+
+        private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();
         }

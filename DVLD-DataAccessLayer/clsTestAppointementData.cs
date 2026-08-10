@@ -41,9 +41,10 @@ namespace DVLD_DataAccessLayer
                                 LocalDrivingLicenseApplicationID = (int)Reader["LocalDrivingLicenseApplicationID"];
                                 AppointmentDate = (DateTime)Reader["AppointmentDate"];
                                 PaidFees = (decimal)Reader["PaidFees"];
-                                UserID = (int)Reader["UserID"];
+                                UserID = (int)Reader["CreatedByUserID"];
                                 IsLocked = (bool)Reader["IsLocked"];
-                                RetakeTestAppointmentID = Reader["RetakeTestApplicationID"] == null ? 0 : (int)Reader["RetakeTestApplicationID"];
+                                RetakeTestAppointmentID = Reader["RetakeTestApplicationID"] == DBNull.Value ? -1 : (int)Reader["RetakeTestApplicationID"];
+                                
 
                             }
                             else
@@ -228,6 +229,7 @@ namespace DVLD_DataAccessLayer
 
                 using (SqlCommand command = new SqlCommand("SP_AddNewTestAppointment", Connection))
                 {
+                    command.CommandType = CommandType.StoredProcedure;
 
                     command.Parameters.AddWithValue("@TestTypeID", TestTypeID);
                     command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
@@ -235,12 +237,20 @@ namespace DVLD_DataAccessLayer
                     command.Parameters.AddWithValue("@PaidFees", PaidFees);
                     command.Parameters.AddWithValue("@UserID", UserID);
                     command.Parameters.AddWithValue("@IsLocked", IsLocked);
-                    command.Parameters.AddWithValue("@RetakeTestAppointmentID", RetakeTestAppointmentID);
-
-                    var outParam = new SqlParameter("@TestAppointmentID", SqlDbType.Int)
+                    if (RetakeTestAppointmentID == -1)
                     {
-                        Direction = ParameterDirection.Output
-                    };
+                        command.Parameters.AddWithValue("@RetakeTestApplicationID", DBNull.Value);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@RetakeTestApplicationID", RetakeTestAppointmentID);
+                    }
+
+
+                        var outParam = new SqlParameter("@TestAppointmentID", SqlDbType.Int)
+                        {
+                            Direction = ParameterDirection.Output
+                        };
                     command.Parameters.Add(outParam);
 
                     try
@@ -269,7 +279,7 @@ namespace DVLD_DataAccessLayer
         }
 
 
-        public static bool UpdateTestAppointment(int TestTypeID, int LocalDrivingLicenseApplicationID, DateTime AppointmentDate,
+        public static bool UpdateTestAppointment(int TestAppointmentID,int TestTypeID, int LocalDrivingLicenseApplicationID, DateTime AppointmentDate,
              decimal PaidFees, int UserID, bool IsLocked, int RetakeTestAppointmentID)
         {
             int EffectedRows = 0;
@@ -285,7 +295,16 @@ namespace DVLD_DataAccessLayer
                     command.Parameters.AddWithValue("@PaidFees", PaidFees);
                     command.Parameters.AddWithValue("@CreatedByUserID", UserID);
                     command.Parameters.AddWithValue("@IsLocked", IsLocked);
-                    command.Parameters.AddWithValue("@RetakeTestApplicationID", RetakeTestAppointmentID);
+                    if (RetakeTestAppointmentID == -1)
+                    {
+                        command.Parameters.AddWithValue("@RetakeTestApplicationID", DBNull.Value);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@RetakeTestApplicationID", RetakeTestAppointmentID);
+                    }
+
+                        command.Parameters.AddWithValue("@TestAppointmentID", TestAppointmentID);
                     command.CommandType = CommandType.StoredProcedure;
 
                     try
@@ -310,6 +329,7 @@ namespace DVLD_DataAccessLayer
 
         public static int GetTestID(int TestAppointmentID)
         {
+            int TestID = -1;
             using (SqlConnection Connection = new SqlConnection(DataAccessSettings.connectionString))
             {
                 using (SqlCommand command = new SqlCommand("SP_GetTestID", Connection))
@@ -328,7 +348,7 @@ namespace DVLD_DataAccessLayer
 
                         if (Result != null && int.TryParse(Result.ToString(), out int ReturnedID))
                         {
-                            TestAppointmentID = ReturnedID;
+                            TestID = ReturnedID;
                         }
 
 
@@ -342,7 +362,7 @@ namespace DVLD_DataAccessLayer
             }
 
 
-                return TestAppointmentID;
+                return TestID;
         }
 
 

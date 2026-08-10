@@ -82,7 +82,7 @@ namespace DVLD_PresentationLayer.Application.Local_Driving_License
 
             lblDrivingLicenseAppID.Text = _LocalDrivingLicenseApplication.LocalDrivingLicenseApplicationID.ToString();
 
-            lblAppliedForLicense.Text = clsLicenseClass.Find(_LocalDrivingLicenseApplication.LicenseClassID).ToString();
+            lblAppliedForLicense.Text = clsLicenseClass.Find(_LocalDrivingLicenseApplication.LicenseClassID)._ClassName;
 
             lblPassedTests.Text = _LocalDrivingLicenseApplication.GetPassedTestCount().ToString();
 

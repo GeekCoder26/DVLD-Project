@@ -61,21 +61,19 @@ namespace DVLD_PresentationLayer.Default_Controls_For_All_project
 
         }
 
-        public void LoadUserInfo(int UserID, int PersonID)
+        public void LoadUserInfo(int PersonID)
         {
-            _UserID = UserID;
+            UserInfo = clsUsers.FindUserByPersonID(PersonID);
 
             if(PersonID != -1)
             {
                  ctrlPersonDetails1.LoadPersonInfo(PersonID);
             }
 
-            UserInfo = clsUsers.FindUserByUserID(UserID);
-
             if (UserInfo == null)
             {
                 ResetUserInfo();
-                MessageBox.Show($"User With Username {UserID} Does Not Exist.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"User With Username {UserInfo._UserName} Does Not Exist.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 

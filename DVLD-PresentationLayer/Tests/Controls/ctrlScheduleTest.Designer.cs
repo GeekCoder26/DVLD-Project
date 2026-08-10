@@ -250,12 +250,12 @@
             // 
             this.dtpDate.CustomFormat = "dd/MM/yyyy";
             this.dtpDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dtpDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpDate.Location = new System.Drawing.Point(191, 410);
             this.dtpDate.Name = "dtpDate";
             this.dtpDate.Size = new System.Drawing.Size(130, 24);
             this.dtpDate.TabIndex = 108;
-            this.dtpDate.Value = new System.DateTime(2025, 11, 29, 0, 0, 0, 0);
+            this.dtpDate.Value = new System.DateTime(2025, 9, 29, 0, 0, 0, 0);
             // 
             // lblFees
             // 

@@ -217,6 +217,7 @@ namespace DVLD_DataAccess
                     {
                         Direction = ParameterDirection.Output
                     };
+                    command.Parameters.Add(outParam);
 
                     try
                     {

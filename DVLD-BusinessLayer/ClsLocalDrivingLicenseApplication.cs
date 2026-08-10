@@ -170,7 +170,8 @@ namespace DVLD_BusinessLayer
 
         public int GetActiveLicenseID()
         {
-            return -1;
+            return clsLicense.GetActiveLicenseIDByPersonID(base._PersonID, LicenseInfo._LicenseClassID);
+
         }
 
 

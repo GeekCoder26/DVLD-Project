@@ -1,4 +1,5 @@
-﻿using DVLD_BusinessLayer;
+﻿using DVLD_Buisness;
+using DVLD_BusinessLayer;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -38,32 +39,32 @@ namespace DVLD_PresentationLayer.Tests
             this.BackColor = Color.FromArgb(240, 245, 255);
 
             // تنسيق عام لل datagridview 
-            dgvShowPeople.BorderStyle = BorderStyle.None;
-            dgvShowPeople.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(240, 240, 240);
-            dgvShowPeople.DefaultCellStyle.BackColor = Color.White;
-            dgvShowPeople.DefaultCellStyle.ForeColor = Color.Black;
-            dgvShowPeople.DefaultCellStyle.Font = new Font("Segoe UI", 10);
+            dgvTestAppointment.BorderStyle = BorderStyle.None;
+            dgvTestAppointment.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(240, 240, 240);
+            dgvTestAppointment.DefaultCellStyle.BackColor = Color.White;
+            dgvTestAppointment.DefaultCellStyle.ForeColor = Color.Black;
+            dgvTestAppointment.DefaultCellStyle.Font = new Font("Segoe UI", 10);
 
             // تنسيق راس الاعمدة
-            dgvShowPeople.EnableHeadersVisualStyles = false;
-            dgvShowPeople.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(60, 120, 200);
-            dgvShowPeople.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dgvShowPeople.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 10);
-            dgvShowPeople.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvTestAppointment.EnableHeadersVisualStyles = false;
+            dgvTestAppointment.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(60, 120, 200);
+            dgvTestAppointment.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvTestAppointment.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 10);
+            dgvTestAppointment.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
             // ضبط ارتفاع الرأس والصفوف
-            dgvShowPeople.ColumnHeadersHeight = 35;
-            dgvShowPeople.RowTemplate.Height = 30;
+            dgvTestAppointment.ColumnHeadersHeight = 35;
+            dgvTestAppointment.RowTemplate.Height = 30;
 
             // إزالة الحدود الثقيلة
-            dgvShowPeople.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dgvShowPeople.GridColor = Color.LightGray;
+            dgvTestAppointment.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvTestAppointment.GridColor = Color.LightGray;
 
             // تحسين المظهر العام
-            dgvShowPeople.BackgroundColor = Color.WhiteSmoke;
-            dgvShowPeople.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvShowPeople.MultiSelect = false;
-            dgvShowPeople.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvTestAppointment.BackgroundColor = Color.WhiteSmoke;
+            dgvTestAppointment.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvTestAppointment.MultiSelect = false;
+            dgvTestAppointment.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             toolStripStatusLabel1.Text = "# Records: 0";
 
@@ -78,43 +79,89 @@ namespace DVLD_PresentationLayer.Tests
 
             CustomizeForm();
 
-            dgvShowPeople.DataSource = _dtLicenseTestAppointments;
-            toolStripStatusLabel1.Text = "# Records: " + dgvShowPeople.Rows.Count.ToString();
+            dgvTestAppointment.DataSource = _dtLicenseTestAppointments;
+            toolStripStatusLabel1.Text = "# Records: " + dgvTestAppointment.Rows.Count.ToString();
 
-            if (dgvShowPeople.Rows.Count > 0)
+            if (dgvTestAppointment.Rows.Count > 0)
 
             {
-                dgvShowPeople.Columns[0].HeaderText = "Appointment ID";
-                dgvShowPeople.Columns[0].Width = 150;
+                dgvTestAppointment.Columns[0].HeaderText = "Appointment ID";
+                dgvTestAppointment.Columns[0].Width = 150;
 
-                dgvShowPeople.Columns[1].HeaderText = "Appointment Date";
-                dgvShowPeople.Columns[1].Width = 200;
+                dgvTestAppointment.Columns[1].HeaderText = "Appointment Date";
+                dgvTestAppointment.Columns[1].Width = 200;
 
-                dgvShowPeople.Columns[2].HeaderText = "Paid Fees";
-                dgvShowPeople.Columns[2].Width = 150;
+                dgvTestAppointment.Columns[2].HeaderText = "Paid Fees";
+                dgvTestAppointment.Columns[2].Width = 150;
 
-                dgvShowPeople.Columns[3].HeaderText = "Is Locked";
-                dgvShowPeople.Columns[3].Width = 100;
+                dgvTestAppointment.Columns[3].HeaderText = "Is Locked";
+                dgvTestAppointment.Columns[3].Width = 100;
 
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnAddTestAppointment_Click(object sender, EventArgs e)
         {
             ClsLocalDrivingLicenseApplication LocalDrivingLicenseApplication = ClsLocalDrivingLicenseApplication.FindByLocalDrivingApplication(_LocalDrivingLicenseApplicationID);
 
-            if(LocalDrivingLicenseApplication.IsThereAnActiveScheduledTest(_TestType))
+            if (LocalDrivingLicenseApplication.IsThereAnActiveScheduledTest(_TestType))
             {
                 MessageBox.Show("Person Already Have An Active Appointment for this test", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
+            clsTest LastTest = LocalDrivingLicenseApplication.GetLastTestPerTestType(_TestType);
 
 
+            if (LastTest == null)
+            {
+                frmScheduleTest form = new frmScheduleTest(_LocalDrivingLicenseApplicationID, _TestType);
+                form.ShowDialog();
+
+                frmListTetAppointments_Load(null, null);
+                return;
+            }
+
+            if (LastTest.TestResult == true)
+            {
+                MessageBox.Show("This person already passed this test before, you can only retake faild test", "Not Allowed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
 
+            frmScheduleTest form2 = new frmScheduleTest(LastTest.TestAppointmentInfo._LocalDrivingLicenseApplicationID, _TestType);
+            form2.ShowDialog();
 
+            frmListTetAppointments_Load(null, null);
 
+        }
+
+        private void cmsEdit_Click(object sender, EventArgs e)
+        {
+            int TestAppointmentID = (int)dgvTestAppointment.CurrentRow.Cells[0].Value;
+
+            frmScheduleTest form = new frmScheduleTest(_LocalDrivingLicenseApplicationID, _TestType, TestAppointmentID);
+
+            form.ShowDialog();
+            frmListTetAppointments_Load(null, null);
+
+        }
+
+        private void cmsTakeTest_Click(object sender, EventArgs e)
+        {
+
+            int TestAppointmentID = (int)dgvTestAppointment.CurrentRow.Cells[0].Value;
+
+            frmTakeTest form = new frmTakeTest(TestAppointmentID, _TestType);
+            form.ShowDialog();
+
+            frmListTetAppointments_Load(null, null);
+
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
